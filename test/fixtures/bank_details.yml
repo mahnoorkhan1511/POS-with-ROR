@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer: one
+  bank_name: MyString
+  last_4_digits: 1
+  card_type: MyString
+
+two:
+  customer: two
+  bank_name: MyString
+  last_4_digits: 1
+  card_type: MyString
