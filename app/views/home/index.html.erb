@@ -1,0 +1,28 @@
+<!-- app/views/pages/home.html.erb -->
+<div class="flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 min-w-screen">
+  <% yield%>
+  <!-- Sidebar -->
+  <div >
+  <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white p-6 pt-20 rounded-r-3xl shadow-lg flex flex-col">
+      <div class="flex items-center space-x-4 mb-10">
+      <div class="h-12 w-12 rounded-full bg-gray-500"></div>
+      <div>
+        <h2 class="text-lg font-semibold">POS name (yet to decide)</h2>
+      </div>
+    </div>
+     <!-- Conditionally render either the admin or user sidebar -->
+    <% if can? :access, :dashboard%>
+      <%= render 'home/owner/admin_sidebar' %> <!-- Renders _admin_sidebar.html.erb -->
+    <% else %>
+     nothing
+    <% end %>
+  </aside>
+  </div>
+  <!-- Main Content -->
+  <div class="ml-64 flex-1 flex flex-col">
+  <main class="flex-1 bg-gray-100  p-6 min-h-screen">
+      <%= render 'shared/main_content'  %> <!-- Renders _user_sidebar.html.erb -->
+  </main>
+  </div>
+</div>
+
