@@ -36,6 +36,8 @@ class Ability
         can :access, :dashboard
         can :invite, User
         can :access, :inviteUser
+        can :manage, User
+        can :manage, Employee
       end
   end
 end

@@ -20,16 +20,8 @@
   </head>
 
   <body class="m-0 p-0">
-    <main>
-      <!-- Notification Component -->
-      <%# <div data-controller="notification" data-notification-target="notification" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg w-64 z-50 hidden">
-        <div class="flex justify-between items-center">
-          <p>Your action was successful!</p>
-          <button class="text-white ml-4" data-action="notification#hide">&times;</button>
-        </div>
-      </div> %>
-      <%# <p class="alert"><%= alert</p> %>
-    </main>
+    <%= turbo_frame_tag "modal" %>
+    <%= turbo_frame_tag "auth_modal" %>
     <%= yield %>
   </body>
 </html>

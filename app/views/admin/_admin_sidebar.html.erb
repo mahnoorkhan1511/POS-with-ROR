@@ -1,0 +1,53 @@
+<% content_for :admin_sidebar do%>
+  <!-- Navigation -->
+  <nav class="flex-1 space-y-4 text-sm">
+    <%= link_to "Dashboard", admin_dashboard_index_path, data: { turbo_frame: "dashboard" }, class: "block hover:bg-gray-700 rounded px-4 py-2 text-sm font-semibold" %>
+
+    <li class="list-none">
+      
+      <button data-controller="sidebar" data-action="click->sidebar#toggle" class="block py-2 px-4 text-white  hover:bg-gray-700 rounded-md text-left w-full text-sm font-semibold">
+        Products
+      </button>
+
+      <ul data-sidebar-target="menu" class="hidden  list-none bg-gray-700">
+        
+        <li>
+          <button class="block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" onclick="window.location='/products/view';">
+            View
+          </button>
+        </li>
+        
+        <li>
+          <button class="block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" onclick="window.location='/products/add';">
+            Add
+          </button>
+        </li>
+      
+      </ul>
+    
+    </li>
+
+    <li class="list-none">
+      
+      <button data-controller="sidebar" data-action="click->sidebar#toggle" class="block py-2 px-4 text-white hover:bg-gray-700 rounded-md text-left w-full text-sm font-semibold">
+        Employees
+      </button>
+      
+      <ul data-sidebar-target="menu" class="hidden  list-none bg-gray-700">
+        
+        <li>
+          <button class="block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" onclick="window.location='/employees/view';">
+            View
+          </button>
+        </li>
+        
+        <li>
+          <%= link_to "Add",new_user_invitation_path,data: { turbo_frame: "user_invite" }, class: "block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" %>
+        </li>
+      
+      </ul>
+    
+    </li>
+
+  </nav>
+<% end %>

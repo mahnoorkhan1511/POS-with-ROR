@@ -3,12 +3,13 @@
   <!-- Top small row -->
   <div class="h-1/5 ">
     <div class="relative">
-  <% if user_signed_in? %>
+  <% if user_signed_in? and !current_user&.employee.admin?%>
     <div class="flex flex-row h-1/6 pt-10 ">
         <div class="flex flex-col w-11/12 ">
             <div class="text-5xl font-bold ">
                 Welcome, <%= current_user.username %>!
             </div>
+
             <div class="text-xl">
                 Time for some work. 
             </div>
@@ -24,29 +25,31 @@
 
             <!-- Dropdown Menu -->
             <div data-dropdown-target="menu" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-md hidden">
-                <%= link_to "Edit Profile", edit_user_registration_path, data: { action: "click->modal#open" }, class: "block text-center w-full px-4 py-2 hover:bg-gray-100" %>
+                <%= link_to "Edit Profile", edit_user_registration_path, data: { turbo_frame: "modal" }, class: "block text-center w-full px-4 py-2 hover:bg-gray-100" %>
                 <%= button_to "Logout", destroy_user_session_path, method: :delete,
                 class: "block w-full text-center px-4 py-2 hover:bg-gray-100 text-red-600" %>
             </div>
         </div>
     </div>
   <% else %>
-   <%= link_to "Login", new_user_session_path, class: "absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded" %>
+   <%= link_to "Login", new_user_session_path, data: { turbo_frame: "auth_modal" }, class: "absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded" %>
   <% end %>
 </div>
   </div>
 
   <!-- Bottom big row -->
   <div class="h-4/5 bg-white flex flex-col rounded-xl overflow-y-auto max-h-screen p-4  mt-4">
-    <% case @page%>
-    <% when 'dashboard'%>
-        <% if can? :access, :dashboard%>
-            <%= render "home/owner/admin_dashboard"%>
-        <% end %>
-    <% when 'invite-user'%>
-        <% if can? :access, :inviteUser%>
-            <%= render "devise/invitations/new"%>
-        <% end %>
-    <% end %>
+    <%= button_to "Logout", destroy_user_session_path, method: :delete,
+                class: "block w-full text-center px-4 py-2 hover:bg-gray-100 text-red-600" %>
+    <%# <% case @page%> %>
+    <%# <% when 'dashboard'%> %>
+        <%# <% if can? :access, :dashboard%> %>
+            <%# <%= render template: "admin/dashboard/index"%> %>
+        <%# <% end %> %>
+    <%# <% when 'invite-user'%> %>
+        <%# <% if can? :access, :inviteUser%> %>
+            <%# <%= render template: "devise/invitations/new", locals: { resource: @resource, resource_name: @resource_name }, layout: false%> %>
+        <%# <% end %> %>
+    <%# <% end %> %>
   </div>
 </div>

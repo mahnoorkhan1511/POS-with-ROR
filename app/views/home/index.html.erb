@@ -1,6 +1,5 @@
 <!-- app/views/pages/home.html.erb -->
 <div class="flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 min-w-screen">
-  <% yield%>
   <!-- Sidebar -->
   <div >
   <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white p-6 pt-20 rounded-r-3xl shadow-lg flex flex-col">
@@ -12,7 +11,7 @@
     </div>
      <!-- Conditionally render either the admin or user sidebar -->
     <% if can? :access, :dashboard%>
-      <%= render 'home/owner/admin_sidebar' %> <!-- Renders _admin_sidebar.html.erb -->
+      <%= render 'admin/admin_sidebar' %> <!-- Renders _admin_sidebar.html.erb -->
     <% else %>
      nothing
     <% end %>

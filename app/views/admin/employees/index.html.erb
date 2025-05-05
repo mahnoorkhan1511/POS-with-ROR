@@ -1,0 +1,33 @@
+<div class="overflow-y-auto">
+  <h1 class="text-gray-500 text-2xl font-semibold p-5">Employees</h1>
+  <table class="table-auto min-w-full">
+  <thead class=" p-6  ">
+    <tr class="p-6 border-b border-gray-400 text-center text-gray-900">
+      <th  class="px-4 py-2 font-medium text-center">Username</th>
+      <th  class="px-4 py-2 font-medium text-center">Email</th>
+      <th  class="px-4 py-2 font-medium text-center">Role</th>
+      <th  class="px-4 py-2 font-medium text-center">Created By Invite</th>
+      <th  class="px-4 py-2 font-medium text-center">Invite</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user|%>
+    <tr class="border-b border-gray-200">
+      <td class="px-6 py-4 text-center"><%= user[:username] || "nil" %></td>
+      <td class="px-6 py-4 text-center"><%= user[:email]%></td>
+      <td class="px-6 py-4 text-center"><%= user.employee[:role] %> </td>
+      <td class="px-6 py-4 text-center"><%= user.created_by_invite?%></td>
+      <td class="px-6 py-4 text-center">
+        <%if user.created_by_invite? && user.invitation_accepted?%>
+          Accepted Invite
+        <% elsif !user.created_by_invite? %>
+          Not Created With Invite
+        <% else%>
+          <%= link_to "Resend Invitation",admin_employee_resend_invitation_path(user),method: :patch, class: "block py-2 px-4 hover:bg-green-200 rounded-md  w-full" %>
+        <%end%>
+      </td>
+    </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>

@@ -2,19 +2,14 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="modal"
 export default class extends Controller {
-  static targets = ["modal"];
-
-  open() {
-    this.modalTarget.classList.remove("hidden");
+  static targets = ["background", "content"]
+  connect(){
+    console.log("modal controller here !!")
   }
-
-  close() {
-    this.modalTarget.classList.add("hidden");
-  }
-  closeAfterSubmit(event) {
-    // Close the modal when the form is submitted successfully
-    if (event.detail.success) {
-      this.close();
+  close(event) {
+    // If click is outside the modal content, close the modal
+    if (!this.contentTarget.contains(event.target)) {
+      this.backgroundTarget.remove()
     }
   }
 }

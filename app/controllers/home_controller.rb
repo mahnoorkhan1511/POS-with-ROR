@@ -11,6 +11,11 @@ include CanCan::ControllerAdditions
       { name: "Leather Wallet", description: "Elegant and durable leather wallet.", image_url: "https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp", sold: 3500 }
       ]
     @page = params[:page] || "dashboard"
+    if @page == "invite-user"
+      # Initialize the resource (Devise expects this for the invitation form)
+      @resource = User.new
+      @resource_name = :user
+    end
     # Assuming `params[:page]` is used to determine which page to render
     # case @page
     # when "dashboard"

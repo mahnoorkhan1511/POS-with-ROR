@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    invitations: "users/invites"
+  }
+  namespace :admin do
+    # get "dashboard", to: "dashboard#show", as: :dashboard
+    resources :dashboard, only: [ :index ]
+    resources :employees, only: [ :index ] do
+      patch :resend_invitation
+    end
+  end
   # devise_for :users do
   #   get "/users/sign_out" => "devise/sessions#destroy"
   # end
@@ -12,9 +21,7 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  get "dashboard", to: "home#index", defaults: { page: "dashboard" }
-  get "invite-user", to: "home#index", defaults: { page: "invite-user" }
-  # post "login", to: "sessions#create"
+  # get "dashboard", to: "home#index"
   # Defines the root path route ("/")
   # root "posts#index"
 end

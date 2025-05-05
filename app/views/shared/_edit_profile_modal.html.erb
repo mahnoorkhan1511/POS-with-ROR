@@ -1,8 +1,12 @@
-<div class= "fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50 text-black ">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl ">
+<%= turbo_frame_tag "modal" do %>
+<div data-controller="modal" 
+       data-action="click->modal#close"
+       data-modal-target="background" class= "fixed inset-0 backdrop-blur flex justify-center items-center z-50 text-black ">
+    <div data-modal-target="content" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl ">
 
         <div class = "flex flex-col justify-center items-center">
            <%= yield %>
         </div>
     </div>
 </div>
+<% end %>
