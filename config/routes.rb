@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    invitations: "users/invites"
+  devise_for :users, skip: [ :unlocks ], controllers: {
+    invitations: "users/invites",
+    registrations: "users/registrations"
   }
   namespace :admin do
     # get "dashboard", to: "dashboard#show", as: :dashboard
     resources :dashboard, only: [ :index ]
-    resources :employees, only: [ :index ] do
-      patch :resend_invitation
+    resources :employees do
+      member do
+        patch :resend_invitation
+        patch :deactivate
+      end
     end
+    resources :categories, only: [ :index ]
   end
   # devise_for :users do
   #   get "/users/sign_out" => "devise/sessions#destroy"

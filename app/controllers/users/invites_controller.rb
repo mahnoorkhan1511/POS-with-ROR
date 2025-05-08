@@ -9,11 +9,13 @@ class Users::InvitesController < Devise::InvitationsController
   end
 
   def create
+    super
     @user = User.invite!(user_params)  # Send the invite to the user
     if @user.persisted?
       if params[:user][:employee_attributes]
         # @user.create_employee(user_params[:employee_attributes])
-        flash.now[:success] = "Invite sent and employee record generated!"
+        flash.now[:notice] = "Invite sent and employee record generated!"
+        redirect_to new_user_invitation_path
       end
 
     else

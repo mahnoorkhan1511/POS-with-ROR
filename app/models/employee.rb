@@ -7,15 +7,15 @@ class Employee < ApplicationRecord
     product_manager: "product_manager"
   }
 
-  def admin?
-    role == "admin"
-  end
+  # def admin?
+  #   role == "admin"
+  # end
 
-  def manager?
-    role == "manager"
-  end
+  # def manager?
+  #   role == "manager"
+  # end
 
-  def product_manager?
-    role == "product_manager"
-  end
+  # def product_manager?
+  #   role == "product_manager"
+  # end
 end

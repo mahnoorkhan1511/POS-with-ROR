@@ -3,12 +3,12 @@
   <!-- Sidebar -->
   <div >
   <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white p-6 pt-20 rounded-r-3xl shadow-lg flex flex-col">
-      <div class="flex items-center space-x-4 mb-10">
-      <div class="h-12 w-12 rounded-full bg-gray-500"></div>
-      <div>
-        <h2 class="text-lg font-semibold">POS name (yet to decide)</h2>
+      <div class="flex flex-row items-center space-x-2 mb-10">
+        <div><%= inline_svg 'logo.svg', class: 'w-20 h-20 fill-current text-white' %></div>
+        <div>
+          <h2 class="text-2xl font-bold ">Maze</h2>
+        </div>
       </div>
-    </div>
      <!-- Conditionally render either the admin or user sidebar -->
     <% if can? :access, :dashboard%>
       <%= render 'admin/admin_sidebar' %> <!-- Renders _admin_sidebar.html.erb -->

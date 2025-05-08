@@ -38,6 +38,7 @@ class Ability
         can :access, :inviteUser
         can :manage, User
         can :manage, Employee
+        can :manage, Category
       end
   end
 end
