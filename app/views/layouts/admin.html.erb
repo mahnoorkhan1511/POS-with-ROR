@@ -21,7 +21,7 @@
 
   <body class="m-0 p-0">
     <%= turbo_frame_tag "modal" %>
-    
+
     <% flash.each do |key, message| %>
         <div data-controller="flash" class="p-4 mb-4 text-sm text-white rounded-xl 
           <%= key == 'notice' ? 'bg-green-500' : 'bg-red-500' %>">
@@ -34,7 +34,7 @@
       <div >
       <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white p-6 pt-20 rounded-r-3xl shadow-lg flex flex-col">
           <div class="flex flex-row items-center space-x-2 mb-10">
-            <div><%= inline_svg 'logo.svg', class: 'w-20 h-20 fill-current text-white' %></div>
+            <div ><%= inline_svg 'logo.svg', class: 'w-20 h-20 fill-current text-white hover:rotate-45 hover:text-cyan-400' %></div>
             <div>
               <h2 class="text-2xl font-bold ">Maze</h2>
             </div>
@@ -55,15 +55,11 @@
             <ul data-sidebar-target="menu" class="hidden  list-none bg-gray-700">
               
               <li>
-                <button class="block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" onclick="window.location='/products/view';">
-                  View
-                </button>
+                <%= link_to "View all products",admin_products_path, class: "block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" %>
               </li>
               
               <li>
-                <button class="block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" onclick="window.location='/products/add';">
-                  Add
-                </button>
+                <%= link_to "Add",new_admin_product_path, class: "block py-2 px-4 hover:bg-gray-600 rounded-md text-left w-full" %>
               </li>
             
             </ul>

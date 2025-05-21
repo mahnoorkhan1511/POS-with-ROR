@@ -1,0 +1,58 @@
+
+<div class = "flex flex-col justify-center items-center">
+  <h2 class= "text-2xl font-semibold mb-4 text-center text-gray-700">Add Product</h2>
+  <%= form_with model: [:admin, @product], local: true, data: { turbo: false} do |f|%>              
+    <div class="flex flex-row justify-between">
+      <div>
+        <%= f.label :category_id, "Category", class: 'font-semibold p-4' %>
+        <%= f.collection_select :category_id, @categories, :id, :name, prompt: "Select a Category", class: 'form-control' %>
+      </div>
+        <p class="text-yellow-400">Don't see the category you want? <%= link_to "create one ",new_admin_category_path, data: { turbo_frame: "add_category",  turbo: true }, class: "text-teal-900  hover:text-teal-700 text-md font-semibold" %></p>
+      <div>
+
+      </div>
+    </div>
+    <div class="">
+      <%= f.label :name, "Name your product", class: 'font-semibold p-4' %>
+      <%= f.text_field :name, autofocus: true, class:'w-full border border-gray-300 p-2'%>
+
+      <%= f.label :description, class: 'font-semibold p-4'  %>
+      <%= f.rich_text_area :description %>
+      
+      <div class="mt-4">
+        <%= f.label :tag_names, "Add Tags" %>
+        <%= f.text_field :tag_names, id: "tags-input" , class:'w-full border border-gray-300 p-2'%>
+
+        <%# <div data-controller="tags">
+          <div data-tags-target="tagList" class="flex gap-2"></div>
+            <input 
+              type="text" 
+              data-action="input->tags#fetchSuggestions" 
+              placeholder="Enter a tag"
+              class="border border-gray-300 p-2 w-full"
+            /> %>
+          
+        <%# </div> %>
+      </div>
+
+      
+      <div class="flex flex-row mt-3">
+        <%= f.label :cost_price, "Cost Price", class: 'font-semibold p-4' %>
+        <%= f.number_field :cost_price, autofocus: true, step: 0.01, min: 0, class:'rounded border border-gray-300 p-2'%>
+
+        <%= f.label :sales_price, "Sales Price", class: 'font-semibold p-4' %>
+        <%= f.number_field :sales_price, autofocus: true, step: 0.01, min: 0, class:'rounded border border-gray-300 p-2'%>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <%= f.label :featured_image,"Add image", class: " mt-4 bg-amber-400 text-white rounded px-4 py-2 text-center hover:bg-amber-500"%>
+      <%= f.file_field :featured_image, accept: "image/*"%>
+    </div>
+
+    <div class=" mt-4 bg-cyan-700 text-white rounded px-4 py-2 text-center hover:bg-cyan-900">
+      <%= f.submit "Add this product" %>
+    </div>
+  <% end %>
+</div>
+<%= turbo_frame_tag "add_category" %>

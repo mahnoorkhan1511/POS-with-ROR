@@ -12,7 +12,9 @@ Rails.application.routes.draw do
         patch :deactivate
       end
     end
-    resources :categories, only: [ :index ]
+    resources :categories
+    resources :products
+    resources :tags, only: [ :index ]
   end
   # devise_for :users do
   #   get "/users/sign_out" => "devise/sessions#destroy"

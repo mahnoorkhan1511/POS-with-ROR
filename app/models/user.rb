@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_one :employee, dependent: :destroy
   has_one :customer, dependent: :destroy
 
-  accepts_nested_attributes_for :employee
+  accepts_nested_attributes_for :employee, allow_destroy: true
 
   scope :excluding_user, ->(user) { where.not(id: user.id) }
 end

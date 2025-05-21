@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_07_085936) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_21_100121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -129,13 +139,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_07_085936) do
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.decimal "sales_price"
-    t.string "description"
     t.string "product_status"
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "cost_price"
     t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "products_tags", id: false, force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "tag_id", null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -149,11 +163,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_07_085936) do
   end
 
   create_table "tags", force: :cascade do |t|
-    t.bigint "product_id", null: false
     t.string "tag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_tags_on_product_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -214,7 +226,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_07_085936) do
   add_foreign_key "products", "categories"
   add_foreign_key "subscriptions", "customers"
   add_foreign_key "subscriptions", "products"
-  add_foreign_key "tags", "products"
   add_foreign_key "transactions", "customers"
   add_foreign_key "transactions", "orders"
   add_foreign_key "transactions", "payment_methods"

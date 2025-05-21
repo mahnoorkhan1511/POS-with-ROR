@@ -39,6 +39,7 @@ class Ability
         can :manage, User
         can :manage, Employee
         can :manage, Category
+        can :manage, Product
       end
   end
 end
