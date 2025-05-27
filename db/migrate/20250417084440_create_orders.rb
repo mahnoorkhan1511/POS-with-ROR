@@ -5,6 +5,6 @@ class CreateOrders < ActiveRecord::Migration[7.2]
       t.string :status
       t.timestamps
     end
-    add_index :orders, [ :order_id, :customer_id ], unique: true
+    add_index :orders, [ :customer_id ], name: "index_orders_on_customer_id", unique: true
   end
 end
