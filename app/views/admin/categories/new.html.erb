@@ -1,0 +1,22 @@
+<%= turbo_frame_tag "add_category" do %>
+  <div data-controller="modal" 
+    data-action="click->modal#close"
+    data-modal-target="background" class= "fixed inset-0 backdrop-blur flex justify-center items-center z-50 text-black ">
+    <div data-modal-target="content" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl ">
+      <div class = "flex flex-col justify-center items-center">
+        <h2 class= "text-2xl font-semibold mb-4 text-center text-gray-700">Add Category</h2>
+        <%= form_with model: [:admin, @category], local: true, data: { turbo: false} do |f|%>
+                    
+          <div class="p-4">
+            <%= f.label :name, "What category is in your mind?", class: 'font-semibold p-4' %>
+            <%= f.text_field :name, autofocus: true, class:'w-full border border-gray-300 p-2'%>
+          </div>
+
+          <div class=" mt-4 bg-cyan-700 text-white rounded px-4 py-2 text-center hover:bg-cyan-900">
+            <%= f.submit "Add this category" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

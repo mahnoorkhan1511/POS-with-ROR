@@ -1,3 +1,5 @@
 class Tag < ApplicationRecord
-  belongs_to :product
+  has_and_belongs_to_many :products
+
+  validates :tag, presence: true, uniqueness: { case_sensitive: false }
 end

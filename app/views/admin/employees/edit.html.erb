@@ -1,0 +1,25 @@
+<%= turbo_frame_tag "edit_role" do %>
+  <div data-controller="modal" 
+    data-action="click->modal#close"
+    data-modal-target="background" class= "fixed inset-0 backdrop-blur flex justify-center items-center z-50 text-black ">
+    <div data-modal-target="content" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl ">
+      <div class = "flex flex-col justify-center items-center">
+        <h2 class= "text-2xl font-semibold mb-4 text-center text-gray-700">Update Employee Role</h2>
+        <%= form_with model: [:admin,@employee], local: true, data: { turbo: false} do |f|%>
+          <div>
+            <strong>Employee Email:</strong> <%= @employee.user.email %>
+          </div>
+                    
+          <div class="p-4">
+            <%= f.label :role, "New Role ", class: 'font-semibold p-4' %>
+            <%= f.select :role, options_for_select(Employee.roles.keys.map { |role| [role.capitalize.humanize, role] }, @employee.role) %>
+          </div>
+
+          <div class=" mt-4 bg-blue-500 text-white rounded px-4 py-2 text-center hover:bg-blue-800">
+            <%= f.submit "Update Employee" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

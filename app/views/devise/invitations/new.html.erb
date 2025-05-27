@@ -1,0 +1,26 @@
+
+<h2 class= "text-2xl font-semibold mb-4 text-center"><%= t "devise.invitations.new.header" %></h2>
+<%=turbo_frame_tag "user_invite" do %>
+<div class="flex justify-center">
+  <%= form_for(resource, as: resource_name,  url: user_invitation_path,  html: { method: :post , data: { turbo: false }}) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource%>
+
+    <% resource.class.invite_key_fields.each do |field| -%>
+      <div class="field">
+        <%= f.label field , class: 'block text-sm font-medium text-gray-700'  %>
+        <%= f.text_field field, class: 'mt-1 p-2 border border-gray-300 rounded w-full'  %>
+      </div>
+    <% end -%>
+    
+    <%# Adding in radio button to specify role %>
+    <%= f.fields_for :employee do |e| %>
+      <%= e.label :role, "Role " %>
+      <%= e.select :role, options_for_select(Employee.roles.keys.map { |role| [role.capitalize, role] }) %>
+    <% end %>
+
+    <div class="actions  mt-4 bg-blue-500 text-white rounded px-4 py-2">
+      <%= f.submit t("devise.invitations.new.submit_button") %>
+    </div>
+  <% end %>
+</div>
+<% end %>
