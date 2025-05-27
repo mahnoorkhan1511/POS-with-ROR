@@ -29,6 +29,8 @@ class Ability
       # See the wiki for details:
       # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
 
+
+      can :read, Product, product_status: Product.product_statuses[:published]
       return unless user.present? && user.employee.present?
 
       employee = user.employee

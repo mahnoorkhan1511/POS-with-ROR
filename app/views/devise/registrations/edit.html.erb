@@ -11,25 +11,29 @@
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
             <%= render "devise/shared/error_messages", resource: resource %>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
                 <div class=" flex flex-col justify-center items-center p-10">
-                    <div>
-                      <%= f.label :avatar, "Profile Picture" %>
-                    </div>
-                        <!-- Current Avatar Display -->
-                        <div class="w-32 h-32 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-40 lg:h-40 xl:w-46 xl:h-46 p-5">
-                          <% if current_user.avatar.attached? %>
-                            <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-full h-full rounded-full" %>
-                          <% else %>
-                            <%= image_tag "profile.jpg", alt: "Default Avatar", class: "w-full h-full rounded-full" %>
-                          <% end %>
-                        </div>
-                        <!-- File Input for New Avatar -->
-                      <div class="relative inline-block">
-                        <%= f.file_field :avatar, class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50 hover:bg-slate-200" %>
-                        <button type="button" class="rounded-md bg-slate-800 py-2 px-4 text-white text-sm shadow-md hover:bg-slate-200 transition-all">
-                          Upload or Change
-                        </button>
-                      </div>
+                  
+                  <div>
+                    <%= f.label :avatar, "Profile Picture" %>
+                  </div>
+                  
+                  <!-- Current Avatar Display -->
+                  <div class="w-32 h-32 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-40 lg:h-40 xl:w-46 xl:h-46 p-5">
+                    <% if current_user.avatar.attached? %>
+                      <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-full h-full rounded-full" %>
+                    <% else %>
+                      <%= image_tag "profile.jpg", alt: "Default Avatar", class: "w-full h-full rounded-full" %>
+                    <% end %>
+                  </div>
+                  
+                  <!-- File Input for New Avatar -->
+                  <div class="relative inline-block">
+                    <%= f.file_field :avatar, class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50 hover:bg-slate-200" %>
+                    <button type="button" class="rounded-md bg-slate-800 py-2 px-4 text-white text-sm shadow-md hover:bg-slate-200 transition-all">
+                      Upload or Change
+                    </button>
+                  </div>
                 </div>
 
                 <div class="flex flex-col justify-center items-center p-10 w-full">
@@ -41,7 +45,7 @@
 
                     <div class="field">
                       <%= f.label :username, class: 'block text-sm font-medium text-gray-700' %>
-                      <%= f.text_field :username, autofocus: true, autocomplete: "email", class:'w-full border border-gray-300 p-2'%>
+                      <%= f.text_field :username, autofocus: true, autocomplete: "user", class:'w-full border border-gray-300 p-2'%>
                     </div>
 
                     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

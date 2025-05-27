@@ -24,4 +24,15 @@ module Admin
       end
     end
   end
+  module ProductHelpler
+    def status(product)
+     if product.published?
+      content_tag(:p, "Published", class: "text-sky-600")
+     elsif product.reviewed?
+      content_tag(:p, "Reviewed", class: " text-emerald-700")
+     else
+      content_tag(:p, "Drafted", class: "text-yellow-600")
+     end
+    end
+  end
 end

@@ -19,26 +19,26 @@
       <tbody>
         
         <% @products.each do |product|%>
-        
-        <tr class="border-b border-gray-200 hover:bg-gray-200">
-          <td class="px-6 py-4 text-center"><%= image_tag product.featured_image, alt: "Product Image", class: "w-25 h-25 " %></td>
-          <td class="px-6 py-4 text-center"><%= product[:name] || "nil" %></td>
+                  
+          <tr class="border-b border-gray-200 hover:bg-gray-200", data-controller="clickable-row" data-clickable-row-href-value="<%= admin_product_path(product)%>" data-action="click->clickable-row#navigate">
+            <td class="px-6 py-4 text-center"><%= image_tag product.featured_image, alt: "Product Image", class: "w-25 h-25 " %></td>
+            <td class="px-6 py-4 text-center"><%= product[:name] || "nil" %></td>
+            
+            
+            <td class="px-6 py-4 text-center"><%= product.description%> </td>
+            <td class="px-6 py-4 text-center items-center">
+              <% product.tags.each do |tag| %>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1">
+                  <%= tag.tag %>
+                </span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4  text-center"><%= creation_status(product) %>
+            </td>
+            <td class="px-6 py-4   text-center"><%= product[:cost_price] %></td>
+            <td class="px-6 py-4   text-center"><%= product[:sales_price] %></td>
+          </tr>
           
-          
-          <td class="px-6 py-4 text-center"><%= product.description%> </td>
-          <td class="px-6 py-4 text-center items-center">
-            <% product.tags.each do |tag| %>
-              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1">
-                <%= tag.tag %>
-              </span>
-            <% end %>
-          </td>
-          <td class="px-6 py-4  text-center"><%= product[:product_status].inspect %>
-          </td>
-          <td class="px-6 py-4   text-center"><%= product[:cost_price] %></td>
-          <td class="px-6 py-4   text-center"><%= product[:sales_price] %></td>
-        </tr>
-        
         <%end%>
       
       </tbody>
@@ -47,4 +47,3 @@
     <h1 class="text-sky-900 text-2xl font-bold p-5 opacity-50">No Product available, table is empty</h1>
   <% end %>
 </div>
-<%= turbo_frame_tag "edit_role" %>

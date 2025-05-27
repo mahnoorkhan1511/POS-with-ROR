@@ -1,0 +1,74 @@
+<div class="flex flex-col">
+  <%= link_to admin_product_path(@product), class:"text-pink-800  hover:text-pink-900" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7">
+      <path fill-rule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+    </svg>
+  <%end%>
+  <div class="text-center p-5">
+      <h1 class="font-bold text-sky-900 text-3xl "> <%= @product.name%></h1>
+  </div>
+    <%= form_with(model: @product, url: admin_product_path(@product), method: :patch, local: true) do |form| %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-1 pt-10 pl-20 pr-20">
+      
+          <div class="container" >
+            <%# editable image of the product here %>
+            <!-- Image Preview -->
+            <img id="image-preview" src="<%= url_for(@product.featured_image) if @product.featured_image.attached? %>" class=" max-w-150 max-h-150">
+
+            <!-- File Input -->
+            <%= form.file_field :featured_image, accept: "image/*", onchange: "loadPreview(event)", class: "block w-full text-sm text-gray-500" %>
+            
+
+          </div>
+          <div class="flex flex-col max-w-100">
+            <%= form.label :name, class: 'block text-sm font-medium text-gray-700' %>
+            <%= form.text_field :name, class:'max-w-100 border border-gray-300 p-2 rounded-lg'%>
+
+            <div class="max-w-100 overflow-x-auto">
+              <%= form.label :description, class: 'block text-sm font-medium text-gray-700'%>
+              <i  class="text-xs text-gray-500 mt-1">(scroll for more options)</i>
+              <%= form.rich_text_area  :description %>
+            </div>
+            <div data-controller="tags">
+              
+                <%= form.label :tag_names %>
+                <div class="flex flex-wrap max-w-100" id="tags-container" >
+                  <% @product.tags.each do |tag|%>
+                    <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 tag">
+                        <%= tag.tag %>
+                        <button class="text-red-600 hover:text-red-800 " data-action="click->tags#remove" >
+                          x
+                        </button>
+                    </span>
+                  <% end%>
+                </div>
+
+                <div class="pt-3 flex flex-row gap-5">
+                  <input type="text", id="new-tag", placeholder="Add new tag ...", class = "max-w-100 border border-gray-300 p-2 rounded-lg"/>
+                  <button type="button" class="bg-green-400 text-green-800 rounded-lg w-25" data-action="click->tags#addTag">Add</button>
+
+                  <%= form.hidden_field :tag_names , id: "product_tag_names"%>
+                </div> 
+            </div>
+            <div class="flex flex-row">
+              <%= form.label :product_status, "Status ", class: 'font-semibold p-4' %>
+              <%= form.select :product_status, options_for_select(Product.product_statuses.keys.map { |product_status| [product_status.capitalize.humanize, product_status] }, @product.product_status),  class:' border-gray-300 p-2 rounded-lg ' %>
+            </div>
+            
+            
+            
+          </div>
+          <div class="actions flex justify-end mt-4 w-full">
+            <%= form.submit "Save Changes" , class: "rounded-md bg-blue-600 py-2 px-6 text-white hover:bg-blue-700 transition-all"%>
+          </div>
+      </div>
+   <%end%>
+</div>
+
+<script>
+  function loadPreview(event) {
+    const output = document.getElementById('image-preview');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = () => URL.revokeObjectURL(output.src); // Free memory
+  }
+</script>

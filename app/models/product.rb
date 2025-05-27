@@ -6,7 +6,11 @@ class Product < ApplicationRecord
 
   accepts_nested_attributes_for :tags
 
-  enum product_status: { drafted: "drafted", reviewed: "reviewed", published: "published" }
+  enum product_status: {
+     drafted: 0,
+     reviewed: 1,
+     published: 2
+    }
 
   validates :name, presence: true, uniqueness: true
   validates :cost_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -18,12 +22,12 @@ class Product < ApplicationRecord
 
   def self.manager_statuses
     {
-      drafted: "drafted",
-      reviewed: "reviewed"
+      drafted: 0,
+      reviewed: 1
     }
   end
 
   def set_default_status
-    self.product_status ||= "drafted"
+    self.product_status ||= :drafted
   end
 end

@@ -5,7 +5,7 @@
     <div class="flex flex-row justify-between">
       <div>
         <%= f.label :category_id, "Category", class: 'font-semibold p-4' %>
-        <%= f.collection_select :category_id, @categories, :id, :name, prompt: "Select a Category", class: 'form-control' %>
+        <%= f.collection_select :category_id, @categories || [], :id, :name, prompt: "Select a Category", class: 'form-control' %>
       </div>
         <p class="text-yellow-400">Don't see the category you want? <%= link_to "create one ",new_admin_category_path, data: { turbo_frame: "add_category",  turbo: true }, class: "text-teal-900  hover:text-teal-700 text-md font-semibold" %></p>
       <div>
@@ -19,20 +19,18 @@
       <%= f.label :description, class: 'font-semibold p-4'  %>
       <%= f.rich_text_area :description %>
       
-      <div class="mt-4">
-        <%= f.label :tag_names, "Add Tags" %>
-        <%= f.text_field :tag_names, id: "tags-input" , class:'w-full border border-gray-300 p-2'%>
-
-        <%# <div data-controller="tags">
-          <div data-tags-target="tagList" class="flex gap-2"></div>
-            <input 
-              type="text" 
-              data-action="input->tags#fetchSuggestions" 
-              placeholder="Enter a tag"
-              class="border border-gray-300 p-2 w-full"
-            /> %>
+      <div data-controller="tags">      
+        <%= f.label :tag_names %>
+        <div class="flex flex-wrap" id="tags-container" >
           
-        <%# </div> %>
+        </div>
+
+        <div class="pt-3 flex flex-row gap-5 w-full">
+          <input type="text", id="new-tag", placeholder="Add new tag ...", class = " border border-gray-300 p-2 rounded-lg"/>
+          <button type="button" class="bg-green-400 text-green-800 rounded-lg w-25 hover:bg-green-500 " data-action="click->tags#addTag">Add</button>
+
+          <%= f.hidden_field :tag_names , id: "product_tag_names"%>
+        </div> 
       </div>
 
       

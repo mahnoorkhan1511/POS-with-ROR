@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :authenticate_user!
-
+  before_action :set_product, only: %i[ show edit update ]
   def index
     @products = Product.all
   end
@@ -13,7 +13,7 @@ class Admin::ProductsController < Admin::BaseController
   def create
     @product = Product.new(product_params)
     if @product.save
-      @product.product_status = "drafted"
+      @product.product_status = :drafted
       # @product[:status] = "drafted"
       assign_tags()
       # render :new
@@ -22,12 +22,37 @@ class Admin::ProductsController < Admin::BaseController
       render :new
     end
   end
+  def show
+  end
 
+  def edit
+  end
+  def update
+    puts params.inspect
+    if @product.update(product_params)
+      puts @product.product_status
+      assign_tags()
+      redirect_to [ :admin, @product ]
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   private
 
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
   def product_params
-    params.require(:product).permit(:name, :description, :featured_image, :cost_price, :sales_price, :tag_names, :category_id,)
+    params.require(:product).permit(:name,
+    :description,
+    :featured_image,
+    :cost_price,
+    :sales_price,
+    :tag_names,
+    :category_id,
+    :product_status)
   end
 
   def assign_tags
