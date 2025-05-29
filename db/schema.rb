@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_29_062310) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_29_074319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,6 +102,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_062310) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "order_transactions", force: :cascade do |t|
+    t.integer "amount"
+    t.string "payment_type"
+    t.boolean "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "order_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "payment_method_id", null: false
+    t.index ["customer_id"], name: "index_order_transactions_on_customer_id"
+    t.index ["order_id"], name: "index_order_transactions_on_order_id"
+    t.index ["payment_method_id"], name: "index_order_transactions_on_payment_method_id"
+  end
+
   create_table "ordered_products", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "product_id", null: false
@@ -168,20 +182,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_062310) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "transactions", force: :cascade do |t|
-    t.bigint "payment_method_id", null: false
-    t.bigint "order_id", null: false
-    t.bigint "customer_id", null: false
-    t.integer "amount"
-    t.string "payment_type"
-    t.boolean "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_transactions_on_customer_id"
-    t.index ["order_id"], name: "index_transactions_on_order_id"
-    t.index ["payment_method_id"], name: "index_transactions_on_payment_method_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -218,6 +218,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_062310) do
   add_foreign_key "customer_reviews", "products"
   add_foreign_key "customers", "users"
   add_foreign_key "employees", "users"
+  add_foreign_key "order_transactions", "customers"
+  add_foreign_key "order_transactions", "orders"
+  add_foreign_key "order_transactions", "payment_methods"
   add_foreign_key "ordered_products", "orders"
   add_foreign_key "ordered_products", "products"
   add_foreign_key "orders", "customers"
@@ -226,7 +229,4 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_062310) do
   add_foreign_key "products", "categories"
   add_foreign_key "subscriptions", "customers"
   add_foreign_key "subscriptions", "products"
-  add_foreign_key "transactions", "customers"
-  add_foreign_key "transactions", "orders"
-  add_foreign_key "transactions", "payment_methods"
 end
