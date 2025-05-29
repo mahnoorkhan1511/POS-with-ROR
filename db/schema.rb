@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_29_095220) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_29_094752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -100,31 +100,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_095220) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_employees_on_user_id"
-  end
-
-  create_table "order_transactions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "payment_method_id", null: false
-    t.bigint "order_id", null: false
-    t.bigint "customer_id", null: false
-    t.integer "amount"
-    t.string "payment_type"
-    t.boolean "status"
-    t.index ["customer_id"], name: "index_order_transactions_on_customer_id"
-    t.index ["order_id"], name: "index_order_transactions_on_order_id"
-    t.index ["payment_method_id"], name: "index_order_transactions_on_payment_method_id"
-  end
-
-  create_table "ordered_products", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "order_id", null: false
-    t.bigint "product_id", null: false
-    t.integer "price"
-    t.integer "quantity"
-    t.index ["order_id"], name: "index_ordered_products_on_order_id"
-    t.index ["product_id"], name: "index_ordered_products_on_product_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -218,11 +193,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_29_095220) do
   add_foreign_key "customer_reviews", "products"
   add_foreign_key "customers", "users"
   add_foreign_key "employees", "users"
-  add_foreign_key "order_transactions", "customers"
-  add_foreign_key "order_transactions", "orders"
-  add_foreign_key "order_transactions", "payment_methods"
-  add_foreign_key "ordered_products", "orders"
-  add_foreign_key "ordered_products", "products"
   add_foreign_key "orders", "customers"
   add_foreign_key "product_in_carts", "carts"
   add_foreign_key "product_in_carts", "products"
