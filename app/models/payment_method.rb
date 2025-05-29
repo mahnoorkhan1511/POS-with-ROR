@@ -1,3 +1,3 @@
 class PaymentMethod < ApplicationRecord
-  has_many :transactions
+  has_many :order_transactions
 end
