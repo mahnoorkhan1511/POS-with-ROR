@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   has_one_attached :featured_image
   has_rich_text :description
   has_and_belongs_to_many :tags
+  has_many :customer_reviews
 
   accepts_nested_attributes_for :tags
 
