@@ -23,5 +23,6 @@ module Pos
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    Rails.application.config.assets.precompile += %w[jquery.min.js jquery_ujs.js jquery-ui.min.js]
   end
 end

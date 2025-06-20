@@ -10,13 +10,13 @@
     <%= form_with(model: @product, url: admin_product_path(@product), method: :patch, local: true) do |form| %>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-1 pt-10 pl-20 pr-20">
       
-          <div class="container" >
+          <div class="container" data-controller="preview" >
             <%# editable image of the product here %>
             <!-- Image Preview -->
-            <img id="image-preview" src="<%= url_for(@product.featured_image) if @product.featured_image.attached? %>" class=" max-w-150 max-h-150">
+            <img id="image-preview" data-preview-target="output" src="<%= url_for(@product.featured_image) if @product.featured_image.attached? %>" class=" max-w-150 max-h-150">
 
             <!-- File Input -->
-            <%= form.file_field :featured_image, accept: "image/*", onchange: "loadPreview(event)", class: "block w-full text-sm text-gray-500" %>
+            <%= form.file_field :featured_image, accept: "image/*",  data: { preview_target: "input", action: "change->preview#previewImage" }, class: "block w-full text-sm text-gray-500" %>
             
 
           </div>
@@ -64,11 +64,3 @@
       </div>
    <%end%>
 </div>
-
-<script>
-  function loadPreview(event) {
-    const output = document.getElementById('image-preview');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = () => URL.revokeObjectURL(output.src); // Free memory
-  }
-</script>

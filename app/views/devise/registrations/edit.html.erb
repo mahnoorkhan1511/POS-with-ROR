@@ -10,7 +10,7 @@
 
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
             <%= render "devise/shared/error_messages", resource: resource %>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-10" data-controller="preview">
                 
                 <div class=" flex flex-col justify-center items-center p-10">
                   
@@ -20,19 +20,17 @@
                   
                   <!-- Current Avatar Display -->
                   <div class="w-32 h-32 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-40 lg:h-40 xl:w-46 xl:h-46 p-5">
-                    <% if current_user.avatar.attached? %>
-                      <%= image_tag current_user.avatar, alt: "User Avatar", class: "w-full h-full rounded-full" %>
-                    <% else %>
-                      <%= image_tag "profile.jpg", alt: "Default Avatar", class: "w-full h-full rounded-full" %>
-                    <% end %>
+                    <% avatar =  current_user.avatar.attached? ? url_for(current_user.avatar) : asset_path('profile.jpg')%>
+                      <%# <%= image_tag current_user.avatar, alt: "User Avatar", id: "image-preview",class: "w-full h-full rounded-full" %>
+                      <img data-preview-target = "output" id="image-preview" src="<%= url_for(avatar)%>" class="w-full h-full rounded-full ">
                   </div>
                   
                   <!-- File Input for New Avatar -->
                   <div class="relative inline-block">
-                    <%= f.file_field :avatar, class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50 hover:bg-slate-200" %>
-                    <button type="button" class="rounded-md bg-slate-800 py-2 px-4 text-white text-sm shadow-md hover:bg-slate-200 transition-all">
+                    <%= f.file_field :avatar, class: "block w-full text-sm text-gray-500",  data: { preview_target: "input", action: "change->preview#previewImage" } %>
+                    <%# <button type="button" class="rounded-md bg-slate-800 py-2 px-4 text-white text-sm shadow-md hover:bg-slate-200 transition-all">
                       Upload or Change
-                    </button>
+                    </button> %>
                   </div>
                 </div>
 
@@ -69,7 +67,6 @@
                       <%= f.label :current_password , class: 'block text-sm font-medium text-gray-700'%> <i  class="text-xs text-gray-500 mt-1">(we need your current password to confirm your changes)</i>
                       <%= f.password_field :current_password, autocomplete: "current-password", class:'w-full border border-gray-300 p-2' %>
                     </div>
-
                     <div class="actions flex justify-end mt-4 w-full">
                       <%= f.submit "Update" , class: "rounded-md bg-blue-600 py-2 px-6 text-white hover:bg-blue-700 transition-all"%>
                     </div>
@@ -78,11 +75,11 @@
               </div>
           <% end %>
 
-          <h3 class=" text-lg font-semibold">Cancel my account</h3>
+          <%# <h3 class=" text-lg font-semibold">Cancel my account</h3> %>
 
-          <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class:"text-red-400" %></div>
+          <%# <>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class:"text-red-400" %>
 
-          <%= link_to "Back", :back %>
+          <%# <%= link_to "Back", :back %> 
 
         </div>
     </div>

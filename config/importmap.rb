@@ -14,3 +14,8 @@ pin "Chart.bundle", to: "Chart.bundle.js"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.esm.js"
 pin "stimulus-autocomplete" # @3.1.0
+pin "jquery", to: "https://code.jquery.com/jquery-3.6.0.min.js", preload: true
+pin "select2", to: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js", preload: true
+# pin "jquery", to: "jquery.min.js", preload: true
+pin "jquery_ujs", to: "jquery_ujs.js", preload: true
+pin "jquery_ui", to: "jquery-ui.min.js", preload: true

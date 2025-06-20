@@ -21,13 +21,13 @@
 
   <body class="m-0 p-0">
     <%= turbo_frame_tag "modal" %>
-
-    <% flash.each do |key, message| %>
-        <div data-controller="flash" class="p-4 mb-4 text-sm text-white rounded-xl 
-          <%= key == 'notice' ? 'bg-green-500' : 'bg-red-500' %>">
-          <%= message %>
-        </div>
-    <% end %>
+    <% if notice.present? %>
+      <p class="text-emerald-800 bg-emerald-300 right-2 top-2  p-3 rounded-lg z-300 absolute text-center" data-controller="flash"><%= notice %></p>
+    <%end%>
+    <% if alert.present? %>
+      <p class="text-amber-500 bg-orange-200 right-2 top-2  p-3 rounded-lg z-300 absolute text-center" data-controller="flash"><%= alert %></p>
+    <%end%>
+    
     
     <div class="flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 min-w-screen">
      <!-- Sidebar -->
