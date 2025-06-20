@@ -69,3 +69,8 @@ gem "cancancan"
 
 gem "devise_invitable", "~> 2.0.0"
 gem "inline_svg"
+
+gem "sassc-rails"
+
+gem "jquery-rails"
+gem "jquery-ui-rails"

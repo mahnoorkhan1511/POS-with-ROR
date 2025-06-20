@@ -2,9 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="tags"
 export default class extends Controller {
-  // static values = {
-  //   tagList : Array
-  // }
+
   connect() {
     console.log("tags controller here!!");
     this.tagList = [];

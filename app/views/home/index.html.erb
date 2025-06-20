@@ -1,27 +1,66 @@
-<!-- app/views/pages/home.html.erb -->
+<%= render 'shared/logged_out_navbar'%>
 <div class="flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 min-w-screen">
   <!-- Sidebar -->
   <div >
-  <aside class="fixed top-0 left-0 h-screen w-64 bg-gray-800 text-white p-6 pt-20 rounded-r-3xl shadow-lg flex flex-col">
-      <div class="flex flex-row items-center space-x-2 mb-10">
-        <div><%= inline_svg 'logo.svg', class: 'w-20 h-20 fill-current text-white' %></div>
-        <div>
-          <h2 class="text-2xl font-bold ">Maze</h2>
-        </div>
+  <aside class="lg:fixed lg:left-0 lg:h-screen lg:w-64 lg:bg-gray-200  lg:p-6 lg:pt-20  lg:border-r lg:border-gray-400 lg:flex lg:flex-col hidden z-0">
+    <div class="flex flex-row items-center space-x-2 mb-10">
+      <div class="flex flex-col">
+        <h2 class="text-2xl font-bold text-gray-900 ">Filters</h2>
+        <%= form_with url: filter_home_index_path, method: :post do |form| %>
+          <%= form.label :Category ,class:"font-bold"%>
+          <% @categories.order(:name).each do |cat|%>
+            <div>
+              <%= check_box_tag 'category_ids[]', cat.id%>
+              <%= label_tag cat.name%>
+            </div>
+          <%end%>
+          <div data-controller="slider" class="flex flex-col">
+            <%= form.label :Price , class:"font-bold" %>
+            <div class="flex flex-row justify-between">
+              <span class="text-green-800 h-5" data-slider-target="range">No range selected</span>
+              <button type="button" data-slider-target="resetbtn" data-action="click->slider#reset">
+                x
+              </button>
+            </div>
+            <%= form.range_field :min,value: 0, in: 0..Product.average(:sales_price).to_i , data: {slider_target: "min", action: "input->slider#update"}, class:"mt-2"%>
+            <%= form.range_field :max, value: Product.maximum(:sales_price).to_i ,in: Product.average(:sales_price).to_i ..Product.maximum(:sales_price).to_i, data: {slider_target: "max", action: "input->slider#update"}, class:"mt-2"%>
+            <%= form.submit "Apply"%>
+          </div>
+        <%end%>
       </div>
-     <!-- Conditionally render either the admin or user sidebar -->
-    <% if can? :access, :dashboard%>
-      <%= render 'admin/admin_sidebar' %> <!-- Renders _admin_sidebar.html.erb -->
-    <% else %>
-     nothing
-    <% end %>
+    </div>
   </aside>
   </div>
   <!-- Main Content -->
-  <div class="ml-64 flex-1 flex flex-col">
-  <main class="flex-1 bg-gray-100  p-6 min-h-screen">
-      <%= render 'shared/main_content'  %> <!-- Renders _user_sidebar.html.erb -->
-  </main>
+  <div class="p-10 flex-1 flex flex-col">
+    <main class="flex-1 bg-gray-100 min-h-screen lg:ml-64">
+      <%# <div id="search_results"></div> %>
+      <% if params[:query].blank? && params[:min].blank? && params[:max].blank? && params[:category_ids].blank?%>
+        <p class="font-bold text-m pb-10 sm:text-xl ">Fight the flare</p>
+          <div class="container  max-w-screen " id="filter_results">
+            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 md:gap-5 lg:grid-cols-5 ">
+              <% @products.each do |product|%>
+                <%= link_to product_path(product) , data: { turbo_frame: "show_product"} do%>
+                  <div class="relative max-w-sm h-80 rounded-md  shadow-lg" >
+                    <%= image_tag product.featured_image, class: "rounded-t-md w-full h-50" %>
+                    <div class="px-4 h-20 flex flex-wrap s:h-auto sm:py-4 md:h-auto md:px-6 md:py-2">
+                        <div class="font-bold text-md md:text-lg lg:text-xl mb-1 w-sm"><%= product[:name]%></div>
+                        <p class="text-gray-900 text-xs md:text-sm">
+                        <%= product.description %>
+                        </p>
+                    </div>
+                    <div class="absolute bottom-0 right-0 pr-2 pb-2">
+                    <span class="inline-block bg-blue-100 text-blue-800 text-xs rounded ">
+                        <%= product[:sales_price]%>
+                    </span> 
+                    </div>
+                  </div>
+                <%end%>
+              <% end %>
+            </div>
+          </div>
+        <%end%>
+        <%= turbo_frame_tag "show_product" %>
+    </main>
   </div>
 </div>
-

@@ -16,21 +16,20 @@
       <p class="p-5 font-bold text-3xl">Top Selling Products </p>
       <div class="container px-10  max-w-screen ">
         <div class="grid grid-cols-3 gap-4 ">
-            <% @product.each do |pro|%>
-                <div class="max-w-sm max-h-100 rounded-md  shadow-lg">
-                    <%= image_tag pro[:image_url], class: "rounded-t-md w-full max-h-50" %>
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2"><%= pro[:name]%></div>
-                        <p class="text-gray-700 text-base">
-                        <%= pro[:name]%>
-                        </p>
-                    </div>
-                    <div class="px-6 pt-4 pb-2">
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= pro[:sold]%><</span>
-
-                    </div>
-                </div>
-            <% end %>
+          <% @product.each do |pro|%>
+            <div class="max-w-sm max-h-100 rounded-md  shadow-lg">
+              <%= image_tag pro[:image_url], class: "rounded-t-md w-full max-h-50" %>
+              <div class="px-6 py-4">
+                  <div class="font-bold text-xl mb-2"><%= pro[:name]%></div>
+                  <p class="text-gray-700 text-base">
+                  <%= pro[:name]%>
+                  </p>
+              </div>
+              <div class="px-6 pt-4 pb-2">
+                  <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= pro[:sold]%><</span>
+              </div>
+            </div>
+          <% end %>
            
         </div>
       </div>

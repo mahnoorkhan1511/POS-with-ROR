@@ -3,7 +3,6 @@
   <% if @products.any?%>
     <table class="table-auto min-w-full">
       <thead class=" p-6  ">
-
         <tr class="p-6 border-b border-gray-400 text-center text-gray-900">
           
           <th  class="px-4 py-2 font-medium text-center">Image</th>
@@ -14,12 +13,10 @@
           <th  class="px-4 py-2 font-medium text-center">Cost Price</th>
           <th  class="px-4 py-2 font-medium text-center">Sales Price</th>
         </tr>
-      
       </thead>
+
       <tbody>
-        
-        <% @products.each do |product|%>
-                  
+        <% @products.each do |product|%>   
           <tr class="border-b border-gray-200 hover:bg-gray-200", data-controller="clickable-row" data-clickable-row-href-value="<%= admin_product_path(product)%>" data-action="click->clickable-row#navigate">
             <td class="px-6 py-4 text-center"><%= image_tag product.featured_image, alt: "Product Image", class: "w-25 h-25 " %></td>
             <td class="px-6 py-4 text-center"><%= product[:name] || "nil" %></td>
@@ -33,8 +30,10 @@
                 </span>
               <% end %>
             </td>
+
             <td class="px-6 py-4  text-center"><%= creation_status(product) %>
             </td>
+
             <td class="px-6 py-4   text-center"><%= product[:cost_price] %></td>
             <td class="px-6 py-4   text-center"><%= product[:sales_price] %></td>
           </tr>

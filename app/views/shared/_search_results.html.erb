@@ -1,0 +1,58 @@
+<div class="flex flex-col w-150 text-zinc-800 p-2 max-h-150 overflow-y-scroll bg-white rounded "  data-search-target="results" >
+  <%if products.empty? && products_by_category.empty? && products_by_tags.empty?%>
+    <p class="font-bold p-2 text-zinc-400">No Results</p>
+  <%end%>
+  <div class="px-2">
+    <% products.each do |product|%>
+      <%= link_to product_path(product), class:"search-option block p-2 rounded transition-colors" , data: { turbo_frame: "show_product"} do%>
+        <div class="flex flex-row gap-3 h-20 py-2 ">
+          <%= image_tag product.featured_image, class:'h-15 w-15 rounded-xl' if product.featured_image.attached? %>
+          <div class="py-4">
+            <%= product.name.titleize%>
+          </div>
+        
+        </div>
+      <%end%>
+    <% end %>
+  </div>
+  <div class="px-2">
+    <% products_by_category.each do |product|%>
+      <%= link_to product_path(product), class:"search-option block p-2 transition-colors", tabindex: "0" , data: { turbo_frame: "show_product"} do%>
+        <div class="flex flex-row gap-3  h-20 py-2">
+          <%= image_tag product.featured_image, class:'h-15 w-15 rounded-xl' if product.featured_image.attached? %>
+          <div class="flex flex-col py-1 ">
+            <div>
+              <%= product.name.titleize%>
+            </div>
+            <div class="text-sm">
+              <%= product.category.name.titleize%>
+            </div>
+            
+          </div>
+        </div>
+      <%end%>
+    <% end %>
+  </div>
+  <div class="px-2">
+    <% products_by_tags.each do |product|%>
+      <%= link_to product_path(product), class:"search-option block p-2  transition-colors", tabindex: "0" , data: { turbo_frame: "show_product"} do%>
+        <div class="flex flex-row gap-3  h-20 py-2">
+          <%= image_tag product.featured_image, class:'h-15 w-15 rounded-xl' if product.featured_image.attached? %>
+          <div class="flex flex-col gap-1">
+            <%= product.name.titleize%>
+            <div class="flex flex-row">
+              <% product.tags.each do |tag|%>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-1 py-1 rounded mr-1">
+                  <%= tag.tag.titleize %>
+                </span>
+              <% end%>
+            </div>
+          
+          </div>
+        </div>
+      <%end%>
+    <% end %>
+  </div> 
+
+   
+</div>

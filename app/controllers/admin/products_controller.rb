@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :authenticate_user!
-  before_action :set_product, only: %i[ show edit update ]
+  before_action :set_product, only: %i[ show edit update destroy ]
   def index
     @products = Product.all
   end
@@ -16,10 +16,12 @@ class Admin::ProductsController < Admin::BaseController
       @product.product_status = :drafted
       # @product[:status] = "drafted"
       assign_tags()
-      # render :new
+      redirect_to admin_products_path
+      flash[:notice] =" #{@product.name} created successfully! "
       puts("--------  product saved. --------")
     else
-      render :new
+      redirect_to new_admin_product_path
+      flash[:alert] = "Error while saving the product !"
     end
   end
   def show
@@ -33,11 +35,17 @@ class Admin::ProductsController < Admin::BaseController
       puts @product.product_status
       assign_tags()
       redirect_to [ :admin, @product ]
+      flash[:notice] =" #{@product.name} updated successfully! "
     else
       render :edit, status: :unprocessable_entity
     end
   end
-
+  def destroy
+    @name = @product.name
+    @product.destroy
+    redirect_to admin_products_path
+    flash[:alert] = "#{@name} deleted !"
+  end
   private
 
   def set_product
@@ -55,6 +63,7 @@ class Admin::ProductsController < Admin::BaseController
     :product_status)
   end
 
+  # using this function instead of nested attributes to prevent duplication of tags
   def assign_tags
     return unless product_params[:tag_names]
     # splitting by comma, removing spaces around the tag and removing empty tags
