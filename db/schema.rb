@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_03_055609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,6 +75,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "customer_details", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
+    t.string "street_apt"
+    t.string "city"
+    t.string "country"
+    t.string "state"
+    t.string "zipcode"
+    t.string "phone"
+    t.string "email"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_customer_details_on_customer_id"
+  end
+
   create_table "customer_reviews", force: :cascade do |t|
     t.integer "stars"
     t.string "review"
@@ -104,15 +121,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
   create_table "order_transactions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "payment_method_id", null: false
     t.bigint "order_id", null: false
     t.bigint "customer_id", null: false
     t.integer "amount"
-    t.string "payment_type"
+    t.integer "payment_type", default: 0, null: false
     t.boolean "status"
     t.index ["customer_id"], name: "index_order_transactions_on_customer_id"
     t.index ["order_id"], name: "index_order_transactions_on_order_id"
-    t.index ["payment_method_id"], name: "index_order_transactions_on_payment_method_id"
   end
 
   create_table "ordered_products", force: :cascade do |t|
@@ -130,7 +145,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "customer_id", null: false
-    t.string "status"
+    t.integer "status", default: 0, null: false
+    t.bigint "customer_detail_id", null: false
+    t.index ["customer_detail_id"], name: "index_orders_on_customer_detail_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
@@ -146,6 +163,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "quantity", default: 0, null: false
+    t.boolean "to_be_ordered", default: true
     t.index ["cart_id"], name: "index_product_in_carts_on_cart_id"
     t.index ["product_id"], name: "index_product_in_carts_on_product_id"
   end
@@ -214,15 +232,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_18_110712) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bank_details", "customers"
   add_foreign_key "carts", "customers"
+  add_foreign_key "customer_details", "customers"
   add_foreign_key "customer_reviews", "customers"
   add_foreign_key "customer_reviews", "products"
   add_foreign_key "customers", "users"
   add_foreign_key "employees", "users"
   add_foreign_key "order_transactions", "customers"
   add_foreign_key "order_transactions", "orders"
-  add_foreign_key "order_transactions", "payment_methods"
   add_foreign_key "ordered_products", "orders"
   add_foreign_key "ordered_products", "products"
+  add_foreign_key "orders", "customer_details"
   add_foreign_key "orders", "customers"
   add_foreign_key "product_in_carts", "carts"
   add_foreign_key "product_in_carts", "products"

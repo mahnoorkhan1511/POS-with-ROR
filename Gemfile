@@ -74,3 +74,7 @@ gem "sassc-rails"
 
 gem "jquery-rails"
 gem "jquery-ui-rails"
+
+gem "stripe"
+
+gem "mailcatcher", "~> 0.10.0"

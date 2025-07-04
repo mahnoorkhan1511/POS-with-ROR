@@ -8,6 +8,8 @@ class Product < ApplicationRecord
   has_many :customer_reviews
   has_many :product_in_carts
   has_many :carts, through: :product_in_carts
+  has_many :ordered_products
+  has_many :orders, through: :ordered_products
 
   accepts_nested_attributes_for :tags
 
@@ -39,5 +41,9 @@ class Product < ApplicationRecord
 
   def set_default_status
     self.product_status ||= :drafted
+  end
+
+  def product_name
+    self.name
   end
 end

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     if can? :access, :dashboard
       admin_dashboard_index_path
     else
-      root_path
+      request.referrer
     end
   end
 

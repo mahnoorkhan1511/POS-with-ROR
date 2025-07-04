@@ -1,4 +1,4 @@
-class ProductsController < ApplicationController
+class Customers::ProductsController < Customers::BaseController
 before_action :set_product, only: %i[show]
 include CanCan::ControllerAdditions
   def index

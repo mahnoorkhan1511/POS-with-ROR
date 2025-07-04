@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class Customers::HomeController < Customers::BaseController
   def index
     @products = Product.published
     @categories = Category.all

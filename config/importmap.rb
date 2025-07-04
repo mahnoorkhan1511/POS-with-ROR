@@ -19,3 +19,4 @@ pin "select2", to: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/sele
 # pin "jquery", to: "jquery.min.js", preload: true
 pin "jquery_ujs", to: "jquery_ujs.js", preload: true
 pin "jquery_ui", to: "jquery-ui.min.js", preload: true
+pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.12

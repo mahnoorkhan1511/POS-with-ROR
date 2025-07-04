@@ -16,26 +16,36 @@ Rails.application.routes.draw do
     resources :products
     resources :tags, only: [ :index ]
   end
-  resources :home do
-    collection do
-      post :search
-      post :filter
+  namespace :customers do
+    resources :home do
+      collection do
+        post :search
+        post :filter
+      end
     end
-  end
-  resources :products
-  resources :carts do
-    member do
-      post :add_to
-      post :remove_from
-      post :directly_update
+    resources :products
+    resources :carts do
+      member do
+        post :add_to
+        post :remove_from
+        post :directly_update
+        post :products_to_be_ordered
+      end
     end
+    resources :orders do
+      member do
+        get :success
+        get :stripe_checkout
+        post :create_stripe_session
+      end
+    end
+    resources :customer_details, only: [ :create ]
   end
-  resources :checkout
   # devise_for :users do
   #   get "/users/sign_out" => "devise/sessions#destroy"
   # end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "home#index"
+  root "customers/home#index"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

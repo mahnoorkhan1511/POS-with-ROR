@@ -19,7 +19,7 @@
           </div>
           <!-- Add to cart -->
           <div class="flex flex-row">
-            <%= form_with url: add_to_cart_path, method: :post, data: { turbo: false } do |form| %>
+            <%= form_with url: add_to_customers_cart_path, method: :post, data: { turbo: false } do |form| %>
               <% form.hidden_field :id, value: @product.id%>
               <div class="max-w-sm relative mt-4 mb-4" data-controller="amount">
                 <div class="relative">
