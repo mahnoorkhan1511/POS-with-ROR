@@ -7,3 +7,4 @@ import "trix"
 import "@rails/actiontext"
 import "jquery_ujs"
 import "./jquery_ui"
+

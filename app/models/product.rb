@@ -46,4 +46,7 @@ class Product < ApplicationRecord
   def product_name
     self.name
   end
+  def profit
+    sales_price-cost_price
+  end
 end

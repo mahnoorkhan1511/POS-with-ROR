@@ -36,8 +36,10 @@ class Ability
       can :read, Product, product_status: Product.product_statuses[:published]
       if user.customer.present?
         can [ :new, :create ], Order
-        can :read, Order
-        can :success, Order
+        can :index, Order
+        can :show, Order, customer_id: user.id
+        can :create, Order
+        can :success, Order, customer_id: user.id
         can :stripe_checkout, Order
         can :create_stripe_session, Order
       end

@@ -9,9 +9,10 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_transaction
 
   enum status: {
-    confirmed: 0,
-    dispatched: 1,
-    delivered: 2,
-    failed: 3
+    processing: 0,
+    confirmed: 1,
+    dispatched: 2,
+    delivered: 3,
+    failed: 4
   }
 end

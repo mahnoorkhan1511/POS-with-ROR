@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_03_055609) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_07_084054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,8 +76,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_055609) do
   end
 
   create_table "customer_details", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
     t.string "address"
     t.string "street_apt"
     t.string "city"
@@ -85,10 +83,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_055609) do
     t.string "state"
     t.string "zipcode"
     t.string "phone"
-    t.string "email"
     t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["address", "street_apt", "city", "country", "state", "zipcode", "phone", "customer_id"], name: "idx_on_address_street_apt_city_country_state_zipcod_83b21f3061", unique: true
     t.index ["customer_id"], name: "index_customer_details_on_customer_id"
   end
 

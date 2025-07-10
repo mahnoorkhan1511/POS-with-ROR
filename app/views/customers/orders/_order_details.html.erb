@@ -1,0 +1,13 @@
+<div>
+  <% @order.ordered_products.each do |op|%>
+    <div class="flex flex-row justify-between">
+      <div class="flex flex-row gap-3">
+        <p class="font-medium">
+          <%= op.quantity%> x
+        </p>
+        <%= op.product.name %>
+      </div>
+      <%= op.price%>
+    </div>
+  <%end%>
+</div>

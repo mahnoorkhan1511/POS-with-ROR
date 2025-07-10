@@ -1,7 +1,11 @@
-<div class="h-full w-full" 
-  data-controller="stripe-checkout" 
-  data-stripe-checkout-publishable-key-value="<%= Rails.application.credentials.dig(:stripe, :pk)%>"
-  data-stripe-checkout-url-value ="<%= create_stripe_session_customers_order_path(@order) %>"
->
-
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+  <div
+    class="bg-white/50 rounded-2xl shadow-2xl relative w-full min-h-[500px] p-8"
+    data-controller="stripe-checkout modal"
+    data-modal-target="content"
+    data-stripe-checkout-publishable-key-value="<%= Rails.application.credentials.dig(:stripe, :pk) %>"
+    data-stripe-checkout-url-value="<%= create_stripe_session_customers_order_path(order) %>"
+  >
+    <!-- You can insert Stripe checkout content or loading spinner here -->
+  </div>
 </div>
