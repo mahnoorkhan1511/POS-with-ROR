@@ -4,11 +4,34 @@
   </p>
   <div class="flex flex-col">
     <% @orders.each do |o|%>
-      <div class="flex flex-row justify-between px-8 rounded-sm bg-gray-100 py-5">
-        <p>Order No. <%= o.id%></p>
-        <p>Status: <%= o.status.capitalize%></p>
+      <div class="px-8 rounded-sm bg-gray-100 py-5 mb-5">
+        <div class="flex flex-row justify-between ">
+          <p>Order No. <%= o.id%></p>
+          <p>Status: <%= o.status.capitalize%></p>
+        </div>
+        <div id="order-details-<%=o.id%>" class="border-b border-b-cyan-700">
+          <% o.ordered_products.each do |op|%>
+            <div class="flex flex-row justify-between">
+              <div class="flex flex-row gap-3">
+                
+                <p class="font-medium">
+                  <%= op.quantity%> x
+                </p>
+                <%= op.product.name %>
+              </div>
+              <%= op.price%>
+            </div>
+          <%end%>
+        </div>
+        <div class="flex flex-row justify-between">
+          <p class="font-medium">
+            <%= o.created_at.to_date%> 
+          </p>
+          <p>
+            Total:  <%= o.order_transaction.amount %> 
+          </p>
+        </div>
       </div>
-      <div id="order-details-<%=o.id%>" class="mb-5"></div>
     <% end%>
   </div>
 </div>
