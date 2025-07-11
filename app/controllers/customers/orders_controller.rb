@@ -1,10 +1,14 @@
 class Customers::OrdersController < Customers::BaseController
   before_action :authenticate_user!
+  before_action :ensure_username, only: %i[new]
   before_action :set_customer, only: %i[ index new create ]
+  before_action :set_order, only: :show
   load_and_authorize_resource
 
   def index
     @orders = Order.where(customer_id: @customer.id)
+  end
+  def show
   end
   def new
     @order = Order.new
@@ -78,6 +82,9 @@ class Customers::OrdersController < Customers::BaseController
   def set_customer
     @customer = current_user.customer
   end
+  def set_order
+    @order = Order.find(params[:id])
+  end
 
   def set_customer_details
     cd_params = params[:order][:customer_detail_attributes]
@@ -119,6 +126,11 @@ class Customers::OrdersController < Customers::BaseController
     when :online
       @cart.products_to_order.destroy_all
       render "customers/orders/stripe_checkout", locals: { order: @order }
+    end
+  end
+  def ensure_username
+    if !current_user.username
+      redirect_to customers_carts_path, alert: "Set your Username !"
     end
   end
 end

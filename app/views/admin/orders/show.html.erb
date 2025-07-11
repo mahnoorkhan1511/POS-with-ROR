@@ -1,0 +1,87 @@
+<div class="flex flex-col">
+  
+  <div class="rounded-full p-2 item-center">
+    <%= link_to admin_orders_path, class:"text-pink-800"  do %>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7">
+        <path fill-rule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+      </svg>
+    <%end%>
+  </div>
+  <div class="flex flex-col ">
+    <div class="flex flex-row justify-between border-b border-slate-200">
+      <!--order details-->
+      <div class="w-1/3 flex flex-col rounded-md p-3">
+        <p class="text-lg my-3 font-semibold">
+          Order Details
+        </p>
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-col font-medium">
+            <p>Order Number:</p>
+            <p>Order Status:</p>
+            <p>Date:</p>
+            <p>Payment Method</p>
+            <p>Payment Status</p>
+            <p>Amount</p>
+          </div>
+          <div class="flex flex-col text-right">
+            <p><%= @order.id %></p>
+            <p><%= @order.status%></p>
+            <p><%= @order.created_at.to_date%></p>
+            <p><%= @order.order_transaction.payment_type%></p>
+            <p>
+              <% if @order.order_transaction.status %>
+                Paid
+              <% else %>
+                Unpaid
+              <%end %>
+            </p>
+            <p><%= @order.order_transaction.amount%></p>
+          </div>
+        </div>
+      </div>
+      <!-- customer details-->
+      <div class="w-1/3 flex flex-col rounded-md p-3">
+        <p class="text-lg my-3 font-semibold">
+          Customer Details
+        </p>
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-col font-medium">
+            <p>Customer Name:</p>
+            <p>Email:</p>
+            <p>Contact No. :</p>
+            <p>Address: </p>
+          </div>
+          <div class="flex flex-col text-right">
+            <p><%= @order.customer.user.username %></p>
+            <p><%= @order.customer.user.email%></p>
+            <p><%= @order.customer_detail.phone%></p>
+          </div>
+        </div>
+        <p><%= @order.customer_detail.address%>,</p>
+        <p>Street/Apt: <%= @order.customer_detail.street_apt%>, <%= @order.customer_detail.city%></p>
+        <p><%= @order.customer_detail.state%>, <%= @order.customer_detail.country%></p>
+      </div>
+    </div>
+    
+    <div class="flex flex-col p-3 w-1/3 mx-110">
+      <p class="text-lg my-3 font-semibold ">
+        Products
+      </p>
+      <% @order.ordered_products.each do |op|%>
+        <div class="flex flex-row justify-between items-center">
+          <div class="flex flex-row items-center gap-2" >
+            <%= image_tag op.product.featured_image, class:'h-13 w-13 rounded-xl' if op.product.featured_image.attached? %>
+            <div class="flex flex-row gap-3">
+              
+              <p class="font-medium">
+                <%= op.quantity%> x
+              </p>
+              <%= op.product.name %>
+            </div>
+          </div>
+          <%= op.price%>
+        </div>
+      <%end%>
+    </div>
+</div>
+</div>

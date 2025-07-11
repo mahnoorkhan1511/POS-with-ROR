@@ -37,9 +37,9 @@ class Ability
       if user.customer.present?
         can [ :new, :create ], Order
         can :index, Order
-        can :show, Order, customer_id: user.id
+        can :show, Order, customer_id: user.customer.id
         can :create, Order
-        can :success, Order, customer_id: user.id
+        can :success, Order, customer_id: user.customer.id
         can :stripe_checkout, Order
         can :create_stripe_session, Order
       end
@@ -54,6 +54,8 @@ class Ability
           can :manage, Employee
           can :manage, Category
           can :manage, Product
+          can :read, Order
+          can :update, Order
         end
       end
   end

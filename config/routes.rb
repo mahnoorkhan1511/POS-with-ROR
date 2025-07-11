@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :categories
     resources :products
     resources :tags, only: [ :index ]
+    resources :orders
   end
   namespace :customers do
     resources :home do

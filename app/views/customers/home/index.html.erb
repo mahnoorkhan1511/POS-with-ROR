@@ -45,7 +45,7 @@
                 <%= link_to customers_product_path(product) , data: { turbo_frame: "show_product"} do%>
                   <div class="relative max-w-sm h-80 rounded-md  shadow-lg" >
                     <%= image_tag product.featured_image, class: "rounded-t-md w-full h-50" %>
-                    <div class="px-4 h-20 flex flex-col  sm:h-auto sm:py-4 sm:px-2 md:h-auto md:px-2 md:px-6 md:py-2">
+                    <div class="px-4 h-20 flex flex-col  sm:h-auto sm:py-4 sm:px-2 md:h-auto md:px-2 md:py-2">
                         
                         <div class="font-bold text-md md:text-lg lg:text-xl mb-1 w-sm">
                           <%= product[:name]%>
