@@ -5,14 +5,12 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets  = ["output", "form"]
   connect() {
-    console.log("amount controller ")
+
   }
   increase(){
-    console.log("amount controller increase simple")
     this.outputTarget.value = parseInt(this.outputTarget.value) + 1;
   }
   decrease(){
-    console.log("amount controller decrease simple")
     this.outputTarget.value = Math.max(0, parseInt(this.outputTarget.value) - 1);
   }
   submit_upon_increase(){

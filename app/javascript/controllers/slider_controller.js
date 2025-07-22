@@ -4,7 +4,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["min","max","range","resetbtn"]
   connect() {
-    console.log(this.minTarget.value + "  " + this.maxTarget.value);
     this.defaultmin = parseInt(this.minTarget.value);
     this.defaultmax = parseInt(this.maxTarget.value);
     this.update();

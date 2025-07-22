@@ -1,5 +1,3 @@
-<%# <%= turbo_frame_tag "stripe_checkout"%> 
-
 <%= form_with model: [:customers, @order], method: :post, data: {turbo: false} do |form|%>
   <div class="flex flex-row w-full h-screen">
     
@@ -24,6 +22,7 @@
             <div class="grid grid-cols-3 m-4">
               <% @customer.customer_details.each_with_index do |cd, index|%>
               <button type="button" class="bg-slate-200 px-3 py-1 rounded m-1" data-action="address-button#fill"  data-address-button-index-value="<%= index %>">
+                
                 <%= cd.address %>
                 </br>
                 <%= cd.city %>
@@ -34,6 +33,7 @@
           <div class="flex flex-row gap-4 py-4">
             
             <div class="flex flex-col w-1/2 ">
+              
               <p class="text-gray-400 px-4">
                 First Name
               </p>
@@ -104,12 +104,12 @@
               <%= cd.text_field :phone, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'phone'%>
             </div>
           </div>
-
         </div>
       <%end%>
       <!-- form for customer_details ending here -->
       <!--- form for order_transaction starting here --->
       <%= form.fields_for :order_transaction do |ot|%>
+        
         <h2 class="text-2xl font-medium pb-4">02. Payment </h2>
         <div class="p-4">
           
@@ -122,8 +122,7 @@
                 <%= ot.radio_button :payment_type, type %>
                 <%= ot.label :payment_type,type.humanize.capitalize, class: 'text-gray-400 px-4 peer-checked:text-gray-600' %>
               </div>
-            <%end%>
-            
+            <%end%>  
           </div> 
           <%= ot.hidden_field :amount, value: @cart.total %>
         </div>
@@ -140,8 +139,10 @@
           <% @cart.products_to_order.each do |pic|%>
             <tr class="flex flex-row justify-between">
               <td class="text-slate-800 py-2 flex flex-row justify-center gap-3">
+                
                 <%= image_tag pic.product.featured_image, alt: "Product Image", class: "w-10 h-10 rounded" %>
                 <div class="flex flex-col ">
+                  
                   <%= pic.product_name.titleize || "nil" %>
                   <p class="text-sm text-zinc-400 text-left">x <%= pic.quantity%></p>
                 </div>

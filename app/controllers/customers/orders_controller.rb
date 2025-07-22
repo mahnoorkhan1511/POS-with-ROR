@@ -8,19 +8,23 @@ class Customers::OrdersController < Customers::BaseController
   def index
     @orders = Order.where(customer_id: @customer.id)
   end
+
   def show
   end
+
   def new
     @order = Order.new
     @order.build_customer_detail
     @order.build_order_transaction
-    @first_name = current_user.username.split(" ")[0]
-    @last_name = current_user.username.split(" ")[1]
+    @first_name = current_user.username.split(" ")[0] || ""
+    @last_name = current_user.username.split(" ")[1] || ""
   end
+
   def create
     @order = @customer.orders.new(order_params)
     @order.order_transaction.customer = @customer
     set_customer_details
+
     if @order.save
       create_ordered_products
       handle_post_save_flow
@@ -28,13 +32,14 @@ class Customers::OrdersController < Customers::BaseController
       render :new
     end
   end
+
   def success
     @order = Order.find_by(id: params[:id])
   end
+
   def create_stripe_session
     # previously find_by id
     @order = Order.find(params[:id])
-    Rails.logger.info "🧪 Ordered Productsfor Stripe: #{@order.ordered_products.inspect}"
     @line_item = @order.ordered_products.map do |op|
       {
         price_data: {
@@ -82,6 +87,7 @@ class Customers::OrdersController < Customers::BaseController
   def set_customer
     @customer = current_user.customer
   end
+
   def set_order
     @order = Order.find(params[:id])
   end
@@ -98,6 +104,7 @@ class Customers::OrdersController < Customers::BaseController
       zipcode: cd_params[:zipcode],
       phone: cd_params[:phone]
     )
+
     if existing_cd
       @order.customer_detail = existing_cd
     elsif @order.customer_detail
@@ -116,7 +123,6 @@ class Customers::OrdersController < Customers::BaseController
   end
 
   def handle_post_save_flow
-    Rails.logger.info "🧪 handle_post_save_flow "
     case @order.order_transaction.payment_type.to_sym
     when :cash_on_delivery
       @order.status = :confirmed

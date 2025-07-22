@@ -8,10 +8,8 @@ export default class extends Controller {
     index: Number
   }
 
-
   connect() {
     this.selectedButton = null
-    console.log("address button")
   }
 
   fill(event) {

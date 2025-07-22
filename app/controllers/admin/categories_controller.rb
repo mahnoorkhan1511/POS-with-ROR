@@ -11,6 +11,7 @@ class Admin::CategoriesController < Admin::BaseController
 
   def create
     @category = Category.new(category_params)
+
     if @category.save
        redirect_back fallback_location: admin_categories_path, notice: "Category successfully created."
     else

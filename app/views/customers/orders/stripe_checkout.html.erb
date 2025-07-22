@@ -6,6 +6,5 @@
     data-stripe-checkout-publishable-key-value="<%= Rails.application.credentials.dig(:stripe, :pk) %>"
     data-stripe-checkout-url-value="<%= create_stripe_session_customers_order_path(order) %>"
   >
-    <!-- You can insert Stripe checkout content or loading spinner here -->
   </div>
 </div>

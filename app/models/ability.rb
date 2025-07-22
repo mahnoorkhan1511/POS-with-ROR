@@ -35,27 +35,13 @@ class Ability
 
       can :read, Product, product_status: Product.product_statuses[:published]
       if user.customer.present?
-        can [ :new, :create ], Order
-        can :index, Order
-        can :show, Order, customer_id: user.customer.id
-        can :create, Order
-        can :success, Order, customer_id: user.customer.id
-        can :stripe_checkout, Order
-        can :create_stripe_session, Order
+        merge Abilities::Role::Customer.new(user)
       end
 
       if user.employee.present?
         employee = user.employee
         if employee.admin?
-          can :access, :dashboard
-          can :invite, User
-          can :access, :inviteUser
-          can :manage, User
-          can :manage, Employee
-          can :manage, Category
-          can :manage, Product
-          can :read, Order
-          can :update, Order
+          merge Abilities::Role::Admin.new(user)
         end
       end
   end

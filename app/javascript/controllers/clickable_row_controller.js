@@ -7,10 +7,12 @@ export default class extends Controller {
     href: String
   }
   connect() {
-    console.log("clickable row controller")
     this.element.style.cursor = "pointor"
   }
-  navigate(){
+  navigate(event){
+    if (event.target.closest("a, button")) {
+      return
+    }
     window.location.href = this.hrefValue;
   }
 }
