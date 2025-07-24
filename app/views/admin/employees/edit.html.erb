@@ -8,7 +8,7 @@
         <%= form_with model: [:admin,@employee], local: true, data: { turbo: false} do |f|%>
           
           <div>
-            <strong>Employee Email:</strong> <%= @employee.user.email %>
+            <strong>Employee Email:</strong> <%= @employee.email %>
           </div>        
           <div class="p-4">
             <%= f.label :role, "New Role ", class: 'font-semibold p-4' %>

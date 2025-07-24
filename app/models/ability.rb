@@ -42,6 +42,8 @@ class Ability
         employee = user.employee
         if employee.admin?
           merge Abilities::Role::Admin.new(user)
+        elsif employee.manager? || employee.product_manager?
+          can :access, :dashboard
         end
       end
   end

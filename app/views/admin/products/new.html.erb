@@ -13,6 +13,13 @@
     </div>
     <div class="">
       
+      <% if @product.errors.any? %>
+        <ul class="mb-4">
+          <% @product.errors.full_messages.each do |message| %>
+            <li class="text-yellow-500"><%= message%></li> 
+          <% end %>
+        </ul>
+      <% end %>
       <%= f.label :name, "Name your product", class: 'font-semibold p-4' %>
       <%= f.text_field :name, autofocus: true, class:'w-full border border-gray-300 p-2'%>
       <%= f.label :description, class: 'font-semibold p-4'  %>

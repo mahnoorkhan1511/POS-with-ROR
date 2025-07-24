@@ -38,7 +38,6 @@ class Customers::OrdersController < Customers::BaseController
   end
 
   def create_stripe_session
-    # previously find_by id
     @order = Order.find(params[:id])
     @line_item = @order.ordered_products.map do |op|
       {
@@ -46,13 +45,11 @@ class Customers::OrdersController < Customers::BaseController
           currency: "usd",
           product_data: {
             name: op.product.name
-            # description: op.product.description
           },
           unit_amount: (op.product.sales_price * 100).to_i
         },
         quantity: op.quantity
       }
-      # add meta attribute for order id
     end
     session = Stripe::Checkout::Session.create({
     ui_mode: "embedded",
@@ -65,7 +62,6 @@ class Customers::OrdersController < Customers::BaseController
     mode: "payment",
       return_url: success_customers_order_url(@order.id, host: request.base_url)
     })
-
     render json: { clientSecret: session.client_secret }
   end
 
@@ -128,12 +124,12 @@ class Customers::OrdersController < Customers::BaseController
       @order.status = :confirmed
       @cart.products_to_order.destroy_all
       redirect_to success_customers_order_url(@order.id), notice: "Order placed with Cash on Delivery" and return
-
     when :online
       @cart.products_to_order.destroy_all
       render "customers/orders/stripe_checkout", locals: { order: @order }
     end
   end
+
   def ensure_username
     if !current_user.username
       redirect_to customers_carts_path, alert: "Set your Username !"

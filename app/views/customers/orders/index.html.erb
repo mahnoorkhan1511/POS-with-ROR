@@ -20,7 +20,7 @@
                   <p class="font-medium">
                     <%= op.quantity%> x
                   </p>
-                  <%= op.product.name %>
+                  <%= op.name %>
                 </div>
                 <%= op.price%>
               </div>
@@ -32,7 +32,7 @@
               <%= o.created_at.to_date%> 
             </p>
             <p>
-              Total:  <%= o.order_transaction.amount %> 
+              Total:  <%= o.amount %> 
             </p>
           </div>
         </div>

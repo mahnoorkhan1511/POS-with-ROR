@@ -15,4 +15,8 @@ class Order < ApplicationRecord
     delivered: 3,
     failed: 4
   }
+
+  delegate :payment_type, :is_paid, :amount, to: :order_transaction
+  delegate :username, :email, to: :customer, prefix: :customer
+  delegate :address, :street_apt, :city, :country, :state, :zipcode, :phone, to: :customer_detail, prefix: :customer
 end

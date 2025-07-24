@@ -19,6 +19,13 @@ class Admin::CategoriesController < Admin::BaseController
     end
   end
 
+  def destroy
+    @category = Category.find(params[:id])
+    name = @category.name
+    @category.destroy
+    redirect_to admin_categories_path, alert: "#{name} deleted along with related products !"
+  end
+
   private
 
   def category_params

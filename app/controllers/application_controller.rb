@@ -18,4 +18,7 @@ class ApplicationController < ActionController::Base
       session[:cart_id] = @cart.id
     end
   end
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, alert: "Access denied."
+  end
 end

@@ -9,6 +9,7 @@
         <%= form_with model: [:admin, @category], local: true, data: { turbo: false} do |f|%>
                     
           <div class="p-4">
+            
             <%= f.label :name, "What category is in your mind?", class: 'font-semibold p-4' %>
             <%= f.text_field :name, autofocus: true, class:'w-full border border-gray-300 p-2'%>
           </div>

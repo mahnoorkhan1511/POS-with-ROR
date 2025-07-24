@@ -7,15 +7,7 @@ class Employee < ApplicationRecord
     product_manager: "product_manager"
   }
 
-  # def admin?
-  #   role == "admin"
-  # end
+  delegate :username, :email, to: :user
 
-  # def manager?
-  #   role == "manager"
-  # end
-
-  # def product_manager?
-  #   role == "product_manager"
-  # end
+  scope :excluding_employee, ->(employee) { where.not(id: employee.id) }
 end

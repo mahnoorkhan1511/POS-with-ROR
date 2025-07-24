@@ -32,15 +32,15 @@
         <p><%= @order.id %></p>
         <p><%= @order.status%></p>
         <p><%= @order.created_at.to_date%></p>
-        <p><%= @order.order_transaction.payment_type%></p>
+        <p><%= @order.payment_type%></p>
         <p>
-          <% if @order.order_transaction.status %>
+          <% if @order.is_paid %>
             Paid
           <% else %>
             Unpaid
           <%end %>
         </p>
-        <p><%= @order.order_transaction.amount%></p>
+        <p><%= @order.amount%></p>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
           <p class="font-medium">
             <%= op.quantity%> x
           </p>
-          <%= op.product.name %>
+          <%= op.name %>
         </div>
         <%= op.price%>
       </div>

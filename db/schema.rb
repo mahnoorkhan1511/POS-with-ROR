@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_07_084054) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_24_093843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,7 +123,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_07_084054) do
     t.bigint "customer_id", null: false
     t.integer "amount"
     t.integer "payment_type", default: 0, null: false
-    t.boolean "status"
+    t.boolean "is_paid"
     t.index ["customer_id"], name: "index_order_transactions_on_customer_id"
     t.index ["order_id"], name: "index_order_transactions_on_order_id"
   end

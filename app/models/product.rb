@@ -25,6 +25,8 @@ class Product < ApplicationRecord
   validates :cost_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :sales_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
+  delegate :name, to: :category, prefix: :category
+
   scope :search_by_name, ->(name) { where("name ILIKE ?", "#{name}%") }
   scope :search_by_tags, ->(tag) { joins(:tags).where("tags.tag ILIKE ?", "#{tag}%").distinct }
   scope :search_by_category, ->(category) { joins(:category).where("categories.name ILIKE ?", "#{category}%") }
@@ -46,7 +48,12 @@ class Product < ApplicationRecord
   def product_name
     self.name
   end
+
   def profit
     sales_price-cost_price
+  end
+
+  def image
+    self.featured_image
   end
 end

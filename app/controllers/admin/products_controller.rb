@@ -18,11 +18,9 @@ class Admin::ProductsController < Admin::BaseController
       @product.product_status = :drafted
       # @product[:status] = "drafted"
       assign_tags()
-      redirect_to admin_products_path
-      flash[:notice] =" #{@product.name} created successfully! "
+      redirect_to admin_products_path, notice: " #{@product.name} created successfully! "
     else
-      redirect_to new_admin_product_path
-      flash[:alert] = "Error while saving the product !"
+      redirect_to new_admin_product_path, alert: "Error while saving the product !"
     end
   end
 
@@ -35,18 +33,16 @@ class Admin::ProductsController < Admin::BaseController
   def update
     if @product.update(product_params)
       assign_tags()
-      redirect_to [ :admin, @product ]
-      flash[:notice] =" #{@product.name} updated successfully! "
+      redirect_to [ :admin, @product ], notice: " #{@product.name} updated successfully! "
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: "Unable to update product! "
     end
   end
 
   def destroy
     @name = @product.name
     @product.destroy
-    redirect_to admin_products_path
-    flash[:alert] = "#{@name} deleted !"
+    redirect_to admin_products_path, alert: "#{@name} deleted !"
   end
 
   private

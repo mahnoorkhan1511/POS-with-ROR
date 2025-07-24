@@ -2,9 +2,8 @@ class OrderedProduct < ApplicationRecord
   belongs_to :order
   belongs_to :product
 
-  # scope :top_sold_products, -> {
-  #   group(:product_id).order("COUNT(product_id) DESC").limit(3).pluck(:product_id, Arel.sql("COUNT(product_id) AS count"))
-  # }
+  delegate :name, :featured_image, to: :product
+
   scope :top_sold_products, -> {
     group("product_id").select("SUM(quantity) as count").order("count DESC").limit(3).pluck(:product_id, Arel.sql("SUM(quantity) AS count"))
   }
