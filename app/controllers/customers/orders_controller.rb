@@ -23,13 +23,13 @@ class Customers::OrdersController < Customers::BaseController
   def create
     @order = @customer.orders.new(order_params)
     @order.order_transaction.customer = @customer
-    set_customer_details
+    @order.save_customer_details(customer: @customer, attributes: params[:order][:customer_detail_attributes])
 
     if @order.save
-      create_ordered_products
+      @order.create_ordered_products(@cart)
       handle_post_save_flow
     else
-      render :new
+      render :new, alert: "Could not place order, try again!"
     end
   end
 
@@ -39,34 +39,9 @@ class Customers::OrdersController < Customers::BaseController
 
   def create_stripe_session
     @order = Order.find(params[:id])
-    @line_item = @order.ordered_products.map do |op|
-      {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: op.product.name
-          },
-          unit_amount: (op.product.sales_price * 100).to_i
-        },
-        quantity: op.quantity
-      }
-    end
-    session = Stripe::Checkout::Session.create({
-    ui_mode: "embedded",
-    line_items: @line_item,
-    payment_intent_data: {
-      metadata: {
-        order_id: @order.id
-      }
-    },
-    mode: "payment",
-      return_url: success_customers_order_url(@order.id, host: request.base_url)
-    })
+    return_url = success_customers_order_url(@order.id, host: request.base_url)
+    session = StripeCheckoutSessionCreator.new(order: @order, return_url: return_url).session
     render json: { clientSecret: session.client_secret }
-  end
-
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, alert: "Access denied."
   end
 
   private
@@ -88,44 +63,13 @@ class Customers::OrdersController < Customers::BaseController
     @order = Order.find(params[:id])
   end
 
-  def set_customer_details
-    cd_params = params[:order][:customer_detail_attributes]
-    existing_cd = CustomerDetail.find_by(
-      customer_id: current_user.customer.id,
-      address: cd_params[:address],
-      street_apt: cd_params[:street_apt],
-      city: cd_params[:city],
-      country: cd_params[:country],
-      state: cd_params[:state],
-      zipcode: cd_params[:zipcode],
-      phone: cd_params[:phone]
-    )
-
-    if existing_cd
-      @order.customer_detail = existing_cd
-    elsif @order.customer_detail
-      @order.customer_detail.customer = @customer
-    end
-  end
-
-  def create_ordered_products
-    @cart.products_to_order.each do |pto|
-      @order.ordered_products.create(
-        product_id: pto.product_id,
-        price: pto.product.sales_price,
-        quantity: pto.quantity
-      )
-    end
-  end
-
   def handle_post_save_flow
+    @cart.products_to_order.destroy_all
     case @order.order_transaction.payment_type.to_sym
     when :cash_on_delivery
       @order.status = :confirmed
-      @cart.products_to_order.destroy_all
       redirect_to success_customers_order_url(@order.id), notice: "Order placed with Cash on Delivery" and return
     when :online
-      @cart.products_to_order.destroy_all
       render "customers/orders/stripe_checkout", locals: { order: @order }
     end
   end
