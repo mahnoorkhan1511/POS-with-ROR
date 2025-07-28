@@ -18,8 +18,6 @@ export default class extends Controller {
       const { clientSecret } = await response.json();
       return clientSecret;
     };
-    // const response = await post(this.urlValue);
-    // const {fetchClientSecret} = await response.json;
 
     const checkout = await stripe.initEmbeddedCheckout({
       fetchClientSecret,

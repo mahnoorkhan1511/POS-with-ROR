@@ -13,7 +13,7 @@ class StripeController < ApplicationController
         payment_intent = event.data.object
         order = Order.find_by(id: payment_intent.metadata.order_id)
         order.status = :confirmed
-        order.order_transaction.update(status: true)
+        order.order_transaction.update(is_paid: true)
         order.save
       when "charge.failed"
         puts "Charge failed"

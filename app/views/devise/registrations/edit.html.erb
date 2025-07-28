@@ -60,7 +60,7 @@
                   <%= f.password_field :current_password, autocomplete: "current-password", class:'w-full border border-gray-300 p-2' %>
                 </div>
                 <div class="actions flex justify-end mt-4 w-full">
-                  <%= f.submit "Update" , class: "rounded-md bg-blue-600 py-2 px-6 text-white hover:bg-blue-700 transition-all"%>
+                  <%= f.submit "Update" , data: { disable_with: "Updating ..." }, class: "rounded-md bg-blue-600 py-2 px-6 text-white hover:bg-blue-700 transition-all"%>
                 </div>
               </div>
             </div>

@@ -13,11 +13,11 @@ class Customers::OrdersController < Customers::BaseController
   end
 
   def new
-    @order = Order.new
+    @order      = Order.new
+    @first_name = current_user.username.split(" ")[0] || ""
+    @last_name  = current_user.username.split(" ")[1] || ""
     @order.build_customer_detail
     @order.build_order_transaction
-    @first_name = current_user.username.split(" ")[0] || ""
-    @last_name = current_user.username.split(" ")[1] || ""
   end
 
   def create
@@ -38,9 +38,11 @@ class Customers::OrdersController < Customers::BaseController
   end
 
   def create_stripe_session
-    @order = Order.find(params[:id])
+    @order     = Order.find(params[:id])
     return_url = success_customers_order_url(@order.id, host: request.base_url)
-    session = StripeCheckoutSessionCreator.new(order: @order, return_url: return_url).session
+    puts "Creating Stripe Checkout session for order ##{@order.id}"
+    session    = StripeCheckoutSessionCreator.new(order: @order, return_url: return_url).session
+    puts "Created session with payment_intent: #{session.payment_intent}"
     render json: { clientSecret: session.client_secret }
   end
 

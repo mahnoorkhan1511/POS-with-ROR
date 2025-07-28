@@ -6,8 +6,10 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     if can? :access, :dashboard
       admin_dashboard_index_path
+    elsif request.referer.present? && request.referer != new_user_session_url
+      request.referer
     else
-      request.referrer
+      stored_location_for(resource) || root_path
     end
   end
 
@@ -18,6 +20,7 @@ class ApplicationController < ActionController::Base
       session[:cart_id] = @cart.id
     end
   end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, alert: "Access denied."
   end

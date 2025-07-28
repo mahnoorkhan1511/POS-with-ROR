@@ -1,8 +1,9 @@
 class StripeCheckoutSessionCreator
   def initialize(order:, return_url:)
-    @order = order
+    @order      = order
     @return_url = return_url
   end
+
   def session
     Stripe::Checkout::Session.create({
     ui_mode: "embedded",
