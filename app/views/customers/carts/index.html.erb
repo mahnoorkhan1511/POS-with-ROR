@@ -1,0 +1,165 @@
+<div class="flex flex-row w-full h-screen">
+
+  <div class="flex flex-col bg-slate-100 w-3/4 ">
+    <div class="p-30 px-60">
+      
+      <p class="text-4xl font-bold py-3">
+        Shopping Bag
+      </p>
+      <table class="table-auto w-200">
+        
+        <thead class=" p-4  ">
+          <tr class="p-4 border-b border-gray-400 text-center text-gray-900">
+            
+            <th  class="px-4 py-2 font-medium text-center"></th>
+            <th  class="px-4 py-2 font-medium text-center">Product</th>
+            <th  class="px-4 py-2 font-medium text-center">Quantity</th>
+            <th  class="px-4 py-2 font-medium text-center">Total</th>
+            <th  class="px-4 py-2 font-medium text-center"></th>
+          </tr>
+        </thead>
+        <tbody >
+          <% @products_in_cart.each do |pic|%>   
+            <tr class="border-b border-gray-200 ">
+              <td class="px-2 py-2 text-center items-center">
+                <%= form_with url: products_to_be_ordered_customers_cart_path(pic.id , :to_be_ordered), method: :post do |form|%>
+                  
+                  <%= form.check_box :to_be_ordered,{onchange: "this.form.requestSubmit()", checked: pic.to_be_ordered}, true, false%>
+                  <%= form.hidden_field :id, value: pic.id %>
+                <%end%>
+              </td>
+              <td class="px-2 py-2 text-center">
+                <div class="flex flex-row gap-4">
+                  
+                  <%= image_tag pic.product.featured_image, alt: "Product Image", class: "w-20 h-20 rounded" %>
+                  <div class="flex flex-col py-3">
+                    
+                    <%= pic.product_name.titleize || "nil" %>
+                    <p class="text-sm text-zinc-400 text-left"><%= pic.product.sales_price%></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-2 py-2 text-center">
+                <%= form_with url: directly_update_customers_cart_path(pic.product.id, cart_main: true), method: :post, data: { controller: "amount", amount_target: "form" } do |form| %>
+
+                  <% form.hidden_field :id, value: pic.product&.id%>
+                  <div class="max-w-sm relative mt-4 mb-4" >
+                    <div class="relative">
+                      <div class="relative flex items-center">
+                        
+                        <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" data-action="click->amount#submit_upon_decrease" class="shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                          <svg class="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                          </svg>
+                        </button>
+                        <input type="text" id="counter-input" name="quantity" data-input-counter data-amount-target="output"  class="shrink-0 text-gray-900  border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center" placeholder="" value="<%=pic.quantity%>" required />
+                        <button type="button" id="increment-button" data-input-counter-increment="counter-input" data-action="click->amount#submit_upon_increase" class="shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                          <svg class="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                <%end%> 
+              </td>
+              <td class="px-2 py-2 text-center">
+                <%= pic.total%> 
+              </td>
+              <td class="px-2 py-2 text-center items-center">
+                <%= form_with url: remove_from_customers_cart_path(pic.id, cart_main: true), method: :post do |form|%>
+
+                  <%= form.hidden_field :id, value: pic.id %>
+                  <button class="text-red-500 hover:text-red-800 text-center mx-3 my-6" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                <%end%>
+              </td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <%if @products_in_cart.empty?%>
+        <div class="h-60 w-60 mx-70 my-30">
+          <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+              
+              <path d="M2405 4080 c-97 -10 -143 -20 -260 -54 -139 -40 -321 -115 -415 -170
+              -217 -126 -475 -469 -595 -791 -14 -38 -41 -95 -59 -125 -19 -30 -47 -82 -64
+              -115 -151 -302 -50 -650 244 -841 166 -108 330 -175 513 -210 47 -9 92 -21 99
+              -27 8 -6 12 -42 13 -111 0 -55 4 -153 8 -216 7 -100 12 -123 39 -177 18 -34
+              32 -66 32 -71 0 -5 -23 -19 -52 -33 -86 -40 -127 -127 -97 -206 14 -38 85
+              -110 133 -135 90 -46 172 -62 351 -65 134 -2 186 -7 245 -23 69 -19 96 -21
+              335 -18 238 4 265 6 324 27 34 12 76 31 92 43 37 28 62 82 57 124 -3 26 0 35
+              14 40 22 7 53 65 62 117 9 46 -14 175 -49 277 -35 102 -55 228 -55 341 l0 97
+              68 12 c71 13 205 61 289 103 70 36 221 139 265 182 89 85 175 233 210 362 19
+              67 22 105 22 278 0 221 -9 297 -55 455 -62 209 -187 407 -345 545 -67 58 -105
+              85 -254 181 -90 58 -419 158 -634 194 -90 15 -380 21 -481 10z m360 -31 c167
+              -14 384 -60 487 -103 21 -9 45 -16 54 -16 24 0 181 -76 244 -118 160 -108 270
+              -206 378 -339 48 -59 96 -159 146 -302 52 -148 61 -219 61 -461 0 -265 -11
+              -313 -117 -505 -23 -43 -180 -205 -198 -205 -6 0 -32 -14 -57 -31 -111 -77
+              -335 -160 -458 -171 -30 -3 -30 -4 -33 -68 -2 -36 1 -108 7 -160 10 -91 18
+              -125 75 -325 42 -147 31 -269 -26 -277 -13 -2 -86 3 -163 10 -145 13 -241 10
+              -277 -9 -40 -21 -1 -29 168 -33 93 -2 184 -7 202 -11 62 -14 53 -85 -17 -132
+              -74 -50 -190 -66 -454 -61 l-212 3 -67 33 c-55 27 -70 39 -87 75 -26 54 -28
+              146 -5 182 16 24 20 25 136 25 140 0 195 11 263 55 112 71 222 236 228 340 2
+              44 0 50 -18 50 -16 0 -21 -9 -27 -49 -11 -80 -63 -171 -142 -251 -83 -84 -131
+              -105 -238 -105 -134 0 -141 31 -32 157 93 109 130 183 145 286 11 87 6 117
+              -20 117 -15 0 -19 -12 -24 -72 -3 -40 -13 -96 -21 -124 -15 -48 -110 -190
+              -150 -223 -24 -20 -56 -85 -56 -113 0 -16 -12 -30 -40 -46 -56 -31 -74 -71
+              -67 -146 2 -34 13 -78 23 -98 9 -21 14 -41 10 -45 -13 -13 -218 -5 -289 11
+              -81 19 -153 54 -188 93 -89 97 -79 167 29 222 55 28 79 26 126 -9 50 -38 112
+              -41 151 -7 43 36 43 84 0 248 -20 79 -43 180 -51 223 -15 86 -20 98 -34 76
+              -19 -30 -9 -109 35 -282 50 -197 52 -210 29 -232 -43 -44 -140 2 -202 94 -48
+              71 -60 134 -68 352 -4 126 -11 201 -18 206 -6 5 -54 17 -106 26 -131 24 -252
+              67 -405 144 -153 79 -233 143 -300 243 -87 130 -123 258 -111 393 10 105 20
+              137 96 291 38 77 100 207 139 288 112 235 179 334 346 509 124 130 254 206
+              500 297 218 80 428 104 700 80z"/>
+              <path d="M1560 3130 c0 -6 28 -10 68 -9 52 1 60 3 37 9 -45 11 -105 11 -105 0z"/>
+              <path d="M1770 3130 l-55 -6 45 -5 c43 -4 45 -5 51 -42 14 -86 100 -117 160
+              -58 33 33 39 80 13 105 -16 17 -102 19 -214 6z"/>
+              <path d="M2425 3130 c-4 -6 0 -10 7 -10 7 -1 65 -2 128 -3 l115 -2 6 -44 c7
+              -53 36 -81 84 -81 47 0 64 8 80 41 21 39 19 86 -2 98 -24 12 -411 13 -418 1z"/>
+              <path d="M2240 2733 c-73 -26 -140 -91 -140 -135 0 -29 13 -20 42 27 15 25 42
+              54 60 65 70 44 175 5 223 -83 20 -37 45 -50 45 -24 0 16 -48 84 -78 110 -38
+              34 -114 54 -152 40z"/>
+            </g>
+          </svg>
+        </div>
+      <%end%>
+    </div>  
+  </div>
+  <div class="flex flex-col bg-white w-1/4 py-50 px-10">
+    
+    <p class="text-2xl font-medium pb-4">
+      SUMMARY
+    </p>
+    <%if @products_to_order.empty?%>
+      <p class=" text-lg"> Sorry bro, you gotta add something in the bag first. </p>
+    <%else%>
+      <table class="border-b border-gray-200">
+        <tbody >
+          <% @products_to_order.each do |pic|%>
+            <tr class="flex flex-row justify-between">
+              
+              <td class="text-slate-800 py-2 ">
+                <%= pic.product_name.titleize %>
+              </td>
+              <td class="text-slate-500 py-2  text-right">
+                <%= pic.total %>
+              </td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <div class="flex flex-row justify-between">
+        
+        <p class="font-bold">TOTAL:</p>
+        <%= @cart.total%>
+      </div>
+      <%=link_to "CHECKOUT", new_customers_order_path ,class: "bg-slate-700 w-50 h-8 text-center py-1 text-white rounded font-semibold mx-23 my-8"%>
+    <%end%>
+  </div>
+</div>

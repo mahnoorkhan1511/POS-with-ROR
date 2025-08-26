@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["background", "content"]
   connect(){
-    console.log("modal controller here !!")
+
   }
   close(event) {
     // If click is outside the modal content, close the modal

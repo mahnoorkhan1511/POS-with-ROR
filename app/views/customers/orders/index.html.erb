@@ -1,0 +1,43 @@
+<div class="flex flex-col p-6 px-18">
+  
+  <p class="text-2xl font-semibold text-gray-600 p-10 mt-10 ">
+    Your Orders 
+  </p>
+  <div class="flex flex-col">
+    <% @orders.each do |o|%>
+      <%= link_to customers_order_path(o) , data: { turbo_frame: "show_order"} do%>
+        <div class="px-8 rounded-sm bg-gray-100 py-5 mb-5">
+          <div class="flex flex-row justify-between ">
+            
+            <p>Order No. <%= o.id%></p>
+            <p>Status: <%= o.status.capitalize%></p>
+          </div>
+          <div id="order-details-<%=o.id%>" class="border-b border-b-cyan-700">
+            <% o.ordered_products.each do |op|%>
+              <div class="flex flex-row justify-between">
+                <div class="flex flex-row gap-3">
+                  
+                  <p class="font-medium">
+                    <%= op.quantity%> x
+                  </p>
+                  <%= op.name %>
+                </div>
+                <%= op.price%>
+              </div>
+            <%end%>
+          </div>
+          <div class="flex flex-row justify-between">
+            
+            <p class="font-medium">
+              <%= o.created_at.to_date%> 
+            </p>
+            <p>
+              Total:  <%= o.amount %> 
+            </p>
+          </div>
+        </div>
+      <%end%>
+    <% end%>
+  </div>
+</div>
+<%= turbo_frame_tag "show_order" %>

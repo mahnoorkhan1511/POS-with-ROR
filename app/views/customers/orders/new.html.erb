@@ -1,0 +1,165 @@
+<%= form_with model: [:customers, @order], method: :post, data: {turbo: false} do |form|%>
+  <div class="flex flex-row w-full h-screen">
+    
+    <div class="flex flex-col bg-slate-100 w-3/4 max-h-screen p-40 overflow-y-auto" data-controller="address-button" data-address-button-details-value='<%= raw(@customer.customer_details.to_json) %>'>
+      <!--- form for customer_details starting here --->
+      <%= form.fields_for :customer_detail do |cd|%>
+        
+        <h2 class="text-2xl font-medium pb-4">01. Shipping Details </h2>
+        <!-- newly added block to see errors -->
+        <% if @order.errors.any? %>
+          <ul class="mb-4">
+            <% @order.errors.full_messages.each do |message| %>
+              <li class="text-yellow-500"><%= message%></li> 
+            <% end %>
+          </ul>
+        <% end %>
+        <!-- errors block end -->
+        <div class="p-4">
+          <% if @customer.customer_details.any?%>
+           
+            <p>Select existing details</p>
+            <div class="grid grid-cols-3 m-4">
+              <% @customer.customer_details.each_with_index do |cd, index|%>
+              <button type="button" class="bg-slate-200 px-3 py-1 rounded m-1" data-action="address-button#fill"  data-address-button-index-value="<%= index %>">
+                
+                <%= cd.address %>
+                </br>
+                <%= cd.city %>
+              </button>
+              <%end%>
+            </div>
+          <%end%>
+          <div class="flex flex-row gap-4 py-4">
+            
+            <div class="flex flex-col w-1/2 ">
+              
+              <p class="text-gray-400 px-4">
+                First Name
+              </p>
+              <p class="text-gray-500 px-4 border-b border-gray-300">
+                <%= @first_name %>
+              </p>
+            </div>
+            <div class="flex flex-col w-1/2">
+              
+              <p class="text-gray-400 px-4">
+                First Name
+              </p>
+              <p class="text-gray-500 px-4 border-b border-gray-300">
+                <%= @last_name %>
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-row gap-4 py-4">
+            
+            <div class="flex flex-col w-3/4 ">
+              
+              <%= cd.label :address, "Address", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :address, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'address'%>
+            </div>
+            <div class="flex flex-col w-1/4">
+              
+              <%= cd.label :street_apt, "Street/Apt.", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :street_apt, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'street_apt'%>
+            </div>
+          </div>
+          <div class="flex flex-col py-4">
+            
+            <%= cd.label :city, "City", class: 'text-gray-400 px-4' %>
+            <%= cd.text_field :city, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'city'%>
+          </div>
+          <div class="flex flex-row gap-4 py-4">
+            
+            <div class="flex flex-col w-1/3">
+              
+              <%= cd.label :country, "Country", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :country, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'country'%>
+            </div>
+            <div class="flex flex-col w-1/3">
+              
+              <%= cd.label :state, "State", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :state, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'state'%>
+            </div>
+            <div class="flex flex-col w-1/3">
+              
+              <%= cd.label :zipcode, "Zip Code", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :zipcode, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'zipcode'%>
+            </div>
+          </div>
+          <div class="flex flex-row gap-4 py-4">
+            
+            <div class="flex flex-col w-1/2 ">
+              
+              <p class="text-gray-400 px-4">
+                Email
+              </p>
+              <p class="text-gray-500 px-4 border-b border-gray-300">
+                <%= current_user.email %>
+              </p>
+            </div>
+            <div class="flex flex-col w-1/2">
+              
+              <%= cd.label :phone, "Phone #.", class: 'text-gray-400 px-4' %>
+              <%= cd.text_field :phone, autofocus: true, class:' border-b border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0', id: 'phone'%>
+            </div>
+          </div>
+        </div>
+      <%end%>
+      <!-- form for customer_details ending here -->
+      <!--- form for order_transaction starting here --->
+      <%= form.fields_for :order_transaction do |ot|%>
+        
+        <h2 class="text-2xl font-medium pb-4">02. Payment </h2>
+        <div class="p-4">
+          
+          <p class="text-gray-400">Select Payment Method: </p>
+          <br>
+          <div class="flex flex-row gap-6">
+            <% OrderTransaction.payment_types.each_key do |type|%>
+              <div>
+              
+                <%= ot.radio_button :payment_type, type %>
+                <%= ot.label :payment_type,type.humanize.capitalize, class: 'text-gray-400 px-4 peer-checked:text-gray-600' %>
+              </div>
+            <%end%>  
+          </div> 
+          <%= ot.hidden_field :amount, value: @cart.total %>
+        </div>
+      <%end%>
+      <!-- form for order_transaction ending here -->
+    </div>
+    <div class="flex flex-col bg-white w-1/4 py-50 px-10">
+      
+      <p class="text-2xl font-medium pb-4">
+        SUMMARY
+      </p>
+      <table class="border-b border-gray-200">
+        <tbody >
+          <% @cart.products_to_order.each do |pic|%>
+            <tr class="flex flex-row justify-between">
+              <td class="text-slate-800 py-2 flex flex-row justify-center gap-3">
+                
+                <%= image_tag pic.product.featured_image, alt: "Product Image", class: "w-10 h-10 rounded" %>
+                <div class="flex flex-col ">
+                  
+                  <%= pic.product_name.titleize || "nil" %>
+                  <p class="text-sm text-zinc-400 text-left">x <%= pic.quantity%></p>
+                </div>
+              </td>
+              <td class="text-slate-500 py-2  text-right">
+                <%= pic.total %>
+              </td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <div class="flex flex-row justify-between">
+        
+        <p class="font-bold">TOTAL:</p>
+        <%= @cart.total%>
+      </div>
+      <%= form.submit "Place Order",class: "bg-slate-700 w-50 h-10 text-center text-white rounded-xl font-semibold mx-23 my-8"%>
+    </div>
+  </div>
+<%end%>

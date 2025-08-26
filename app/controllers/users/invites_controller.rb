@@ -10,18 +10,20 @@ class Users::InvitesController < Devise::InvitationsController
 
   def create
     super
-    @user = User.invite!(user_params)  # Send the invite to the user
-    if @user.persisted?
-      if params[:user][:employee_attributes]
-        # @user.create_employee(user_params[:employee_attributes])
-        flash.now[:notice] = "Invite sent and employee record generated!"
-        redirect_to new_user_invitation_path
-      end
+      @user = User.invite!(user_params)  # Send the invite to the user
+      if @user.persisted?
+        if params[:user][:employee_attributes]
+          # @user.create_employee(user_params[:employee_attributes])
+          # flash.now[:notice] = "Invite sent and employee record generated!"
+          return new_user_invitation_url, notice: "Invite sent and employee record generated!"
+        else
+          return new_user_invitation_url, alert: "Employee attributes are missing or invalid."
+        end
 
-    else
-      render :new, alert: "Employee attributes are missing or invalid."
-      flash.now[:error] = "Something is wrong, try again!"
-    end
+      else
+        flash.now[:alert] = "Something is wrong, try again!"
+  render :new, status: :unprocessable_entity
+      end
   end
 
   private

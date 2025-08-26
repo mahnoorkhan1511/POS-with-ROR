@@ -30,18 +30,21 @@ class Ability
       # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
 
 
-      can :read, Product, product_status: Product.product_statuses[:published]
-      return unless user.present? && user.employee.present?
 
-      employee = user.employee
-      if employee.admin?
-        can :access, :dashboard
-        can :invite, User
-        can :access, :inviteUser
-        can :manage, User
-        can :manage, Employee
-        can :manage, Category
-        can :manage, Product
+      return unless user.present?
+
+      can :read, Product, product_status: Product.product_statuses[:published]
+      if user.customer.present?
+        merge Abilities::Role::Customer.new(user)
+      end
+
+      if user.employee.present?
+        employee = user.employee
+        if employee.admin?
+          merge Abilities::Role::Admin.new(user)
+        elsif employee.manager? || employee.product_manager?
+          can :access, :dashboard
+        end
       end
   end
 end

@@ -15,16 +15,42 @@ Rails.application.routes.draw do
     resources :categories
     resources :products
     resources :tags, only: [ :index ]
+    resources :orders
+  end
+  namespace :customers do
+    resources :home do
+      collection do
+        post :search
+        post :filter
+      end
+    end
+    resources :products
+    resources :carts do
+      member do
+        post :add_to
+        post :remove_from
+        post :directly_update
+        post :products_to_be_ordered
+      end
+    end
+    resources :orders do
+      member do
+        get :success
+        get :stripe_checkout
+        post :create_stripe_session
+      end
+    end
+    resources :customer_details, only: [ :create ]
   end
   # devise_for :users do
   #   get "/users/sign_out" => "devise/sessions#destroy"
   # end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "home#index"
+  root "home#redirect_by_role"
+  post "/stripe/webhook", to: "stripe#webhook"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-  resources :home, only: [ :index ]
   # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

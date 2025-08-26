@@ -1,6 +1,7 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :authenticate_user!
-  before_action :set_product, only: %i[ show edit update ]
+  before_action :set_product, only: %i[ show edit update destroy ]
+
   def index
     @products = Product.all
   end
@@ -12,30 +13,36 @@ class Admin::ProductsController < Admin::BaseController
 
   def create
     @product = Product.new(product_params)
+
     if @product.save
       @product.product_status = :drafted
       # @product[:status] = "drafted"
       assign_tags()
-      # render :new
-      puts("--------  product saved. --------")
+      redirect_to admin_products_path, notice: " #{@product.name} created successfully! "
     else
-      render :new
+      redirect_to new_admin_product_path, alert: "Error while saving the product !"
     end
   end
+
   def show
   end
 
   def edit
   end
+
   def update
-    puts params.inspect
     if @product.update(product_params)
-      puts @product.product_status
       assign_tags()
-      redirect_to [ :admin, @product ]
+      redirect_to [ :admin, @product ], notice: " #{@product.name} updated successfully! "
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: "Unable to update product! "
     end
+  end
+
+  def destroy
+    @name = @product.name
+    @product.destroy
+    redirect_to admin_products_path, alert: "#{@name} deleted !"
   end
 
   private
@@ -57,11 +64,8 @@ class Admin::ProductsController < Admin::BaseController
 
   def assign_tags
     return unless product_params[:tag_names]
-    # splitting by comma, removing spaces around the tag and removing empty tags
     tag_names = params[:product][:tag_names].split(",").map(&:strip).reject(&:blank?)
     tags = tag_names.map { |tag| Tag.find_or_create_by(tag: tag.downcase) }
     @product.tags = tags
-    puts ("----------tags if saved are shown below--------")
-    puts @product.tags
   end
 end

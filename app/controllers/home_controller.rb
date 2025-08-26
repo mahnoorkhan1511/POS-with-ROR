@@ -1,8 +1,9 @@
 class HomeController < ApplicationController
-# before_action :authenticate_user!, only: [ :admin ]
-# allow_unauthenticated_access only: %i[ index ]
-include CanCan::ControllerAdditions
-  def index
-    @products = Product.all
+  def redirect_by_role
+    if current_user&.employee&.admin? || current_user&.employee&.manager? || current_user&.employee&.product_manager?
+      redirect_to admin_dashboard_index_path
+    else
+      redirect_to customers_home_index_path
+    end
   end
 end

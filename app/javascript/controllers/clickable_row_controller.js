@@ -9,7 +9,10 @@ export default class extends Controller {
   connect() {
     this.element.style.cursor = "pointor"
   }
-  navigate(){
+  navigate(event){
+    if (event.target.closest("a, button")) {
+      return
+    }
     window.location.href = this.hrefValue;
   }
 }

@@ -102,4 +102,9 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  #
+  #
+  # IE8 doesn't support some unescaped Unicode character and need to quote keys in object literals You need some configurations for Uglifier to do the work.
+  require "uglifier"
+  config.assets.js_compressor = Uglifier.new(output: { ascii_only: true, quote_keys: true })
 end

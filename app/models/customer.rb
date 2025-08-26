@@ -4,4 +4,8 @@ class Customer < ApplicationRecord
   has_many :customer_reviews
   has_many :orders
   has_many :order_transactions
+  has_many :customer_details
+  has_one :cart
+
+  delegate :username, :email, to: :user
 end

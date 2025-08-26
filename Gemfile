@@ -69,3 +69,12 @@ gem "cancancan"
 
 gem "devise_invitable", "~> 2.0.0"
 gem "inline_svg"
+
+gem "sassc-rails"
+
+gem "jquery-rails"
+gem "jquery-ui-rails"
+
+gem "stripe"
+
+gem "mailcatcher", "~> 0.10.0"

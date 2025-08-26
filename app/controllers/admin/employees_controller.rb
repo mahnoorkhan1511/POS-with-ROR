@@ -3,20 +3,18 @@ class Admin::EmployeesController < Admin::BaseController
   before_action :find_corresponding_user, only: %i[resend_invitation deactivate]
 
   load_and_authorize_resource
+
   def index
-    @employees = Employee.all
-    @users = User.joins(:employee).excluding_user(current_user)
+    @employees = Employee.all.excluding_employee(current_user.employee)
+    # @users = User.joins(:employee).excluding_user(current_user)
   end
 
   def resend_invitation
-    puts "hello from resend invite"
-    # @employee = Employee.find(params[:id])
-    # @user = @employee.user
     if @user.created_by_invite? and @user.invitation_accepted? == false
-      puts "inviting user!!!!    !!!!!  !!!!"
       @user.invite!
-      flash.now[:notice] = "User Re-invited"
-      redirect_to admin_employees_path
+      redirect_to admin_employees_path, notice: "Invitation re-sent to #{@employee.email}"
+    else
+      redirect_to admin_employees_path, alert: "#{@employee.email} was not created with invite. CANNOT resend invite"
     end
   end
 
@@ -25,20 +23,20 @@ class Admin::EmployeesController < Admin::BaseController
 
   def update
     if @employee.update(employee_params)
-      redirect_to admin_employees_path
+      redirect_to admin_employees_path, notice: "Successfully updated #{@employee.username || @employee.email} !"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity, alert: "Update Failed !"
     end
   end
 
   def deactivate
     if @user.access_locked?
       @user.unlock_access!
+      redirect_to admin_employees_path, notice: "#{@user.username || @user.email} is now active !"
     else
       @user.lock_access!(send_instructions: false)
+      redirect_to admin_employees_path, alert: "#{@user.username || @user.email} is deactivated !"
     end
-
-    redirect_to admin_employees_path
   end
 
   private
