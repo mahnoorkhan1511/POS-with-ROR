@@ -1,7 +1,7 @@
-<div class="flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 min-w-screen">
+<div class="relative flex flex-row min-h-screen bg-gray-100 font-sans text-gray-900 w-screen overflow-x-hidden">
   <!-- Sidebar -->
   <div >
-    <aside class="lg:fixed lg:left-0 lg:h-screen lg:w-64 lg:bg-gray-200  lg:p-6 lg:pt-20  lg:border-r lg:border-gray-400 lg:flex lg:flex-col hidden z-0">
+    <aside class="lg:fixed lg:left-0 lg:h-screen lg:w-64 lg:bg-gray-200  lg:p-6 lg:pt-20  lg:border-r lg:border-gray-400 lg:flex lg:flex-col hidden z-10">
       <div class="flex flex-row items-center space-x-2 mb-10">
         <div class="flex flex-col">
           
@@ -36,11 +36,12 @@
     </aside>
   </div>
   <!-- Main Content -->
-  <div class="p-10 flex-1 flex flex-col">
-    <main class="flex-1 bg-gray-100 min-h-screen lg:ml-64">
+  <div class="relative flex-1 flex flex-col overscroll-none">
+    <main class="flex-1 p-10 bg-gray-100 min-h-screen lg:ml-64">
       <% if params[:query].blank? && params[:min].blank? && params[:max].blank? && params[:category_ids].blank?%>
+        
         <p class="font-bold text-m pb-10 sm:text-xl ">Fight the flare</p>
-        <div class="container  max-w-screen " id="filter_results">
+        <div class="container  max-w-full overflow-x-hidden " id="filter_results">
           <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 md:gap-5 lg:grid-cols-5 ">
             <% @products.each do |product|%>
               <%= link_to customers_product_path(product) , data: { turbo_frame: "show_product"} do%>

@@ -4,7 +4,7 @@
       <div class = "flex flex-col justify-center items-center">
 
         <h2 class="text-2xl font-semibold mb-4 text-center">Edit <%= resource_name.to_s.humanize %></h2>
-        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put , data: { turbo: false }}) do |f| %>
           
           <%= render "devise/shared/error_messages", resource: resource %>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-10" data-controller="preview">

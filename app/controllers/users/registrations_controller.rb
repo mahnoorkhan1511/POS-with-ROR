@@ -11,4 +11,10 @@ class Users::RegistrationsController < DeviseInvitable::RegistrationsController
       end
     end
   end
+
+  def after_update_path_for(resource)
+    puts "after update path (request referrer) : #{request.referrer}"
+    puts "after update path (stored location) : #{stored_location_for(resource)}"
+    request.referrer || root_path
+  end
 end
